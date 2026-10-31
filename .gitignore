@@ -1,0 +1,15 @@
+.venv/
+.venv-pii/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.env*
+!.env.example
+tmp/
+
+# The frozen corpus and raw evidence are never part of this repository (see data/README.md).
+/data/*
+!/data/README.md
+!/data/sample/
+/evidence/
