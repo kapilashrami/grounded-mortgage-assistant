@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title>Mortgage assistant · Observability</title>
+    <link rel="stylesheet" href="/inspect/static/inspect.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="/inspect" class="brand" aria-label="Mortgage assistant observability"
+        >Mortgage assistant <span>/ Observability</span></a
+      >
+      <span class="environment">Local</span>
+      <div
+        id="summary"
+        class="summary-metrics"
+        aria-label="Totals for the retained traces"
+        aria-live="polite"
+      ></div>
+      <button id="refresh" class="quiet-button" type="button">Refresh</button>
+    </header>
+    <main class="console">
+      <aside class="run-list" aria-label="Traces" tabindex="0">
+        <div class="list-heading">
+          <h1>Runs</h1>
+          <p id="list-status" class="list-status" role="status"></p>
+        </div>
+        <div id="turns" class="turns"></div>
+      </aside>
+      <article
+        id="detail"
+        class="detail"
+        aria-label="Trace details"
+        tabindex="0"
+      >
+        <div class="empty">
+          <h2>Select a run</h2>
+          <p>
+            See its answer, the steps it took, the evidence it used, tokens,
+            latency and cost.
+          </p>
+        </div>
+      </article>
+    </main>
+    <p id="announcements" class="sr-only" aria-live="polite"></p>
+    <script src="/inspect/static/inspect.js"></script>
+  </body>
+</html>
