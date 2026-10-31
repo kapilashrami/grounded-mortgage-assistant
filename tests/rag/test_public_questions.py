@@ -37,4 +37,11 @@ def test_amounts_keep_a_message_off_the_public_path(text):
 
 def test_personal_ltv_and_actions_stay_off_the_public_path():
     assert not is_public("What is my LTV?")
+    assert not is_public("What is my loan to value?")
+    assert not is_public("What is our loan-to-value?")
     assert not is_public("Can you calculate this?")
+
+
+def test_general_ltv_questions_stay_public():
+    assert is_public("What is loan to value?")
+    assert is_public("What is the maximum loan-to-value?")

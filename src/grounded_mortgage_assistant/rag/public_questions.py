@@ -129,7 +129,9 @@ class PublicQuestionScope:
             _AMOUNT.search(raw)
             or _EXECUTION.search(raw)
             or _ASSERTION.search(raw)
-            or re.search(r"\b(?:my|our)\s+ltv\b", raw, re.IGNORECASE)
+            or re.search(
+                r"\b(?:my|our)\s+(?:ltv|loan[\s-]+to[\s-]+value)\b", raw, re.IGNORECASE
+            )
         )
 
     def scope_partner_records(
