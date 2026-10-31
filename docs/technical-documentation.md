@@ -12,7 +12,7 @@ The knowledge corpus covers consumer loans, business loans, mortgages, insurance
 
 The project adds an independent FastAPI/LangGraph backend and a local integration. It reuses the company's Gatsby interface and capstone source material that had already been reviewed. The proprietary frontend stays outside this repository, with 15 saved page contexts for offline browsing, so routes without saved content may be unavailable. Everything runs locally on synthetic financial values, and submission, BankID, credit checks and analytics are blocked.
 
-The original design planned a hosted, bilingual assistant. The sections below describe what was implemented and keep historical measurements apart from current browser observations.
+The [design one-pager](capstone-one-ish-pager.pdf) planned a hosted, bilingual assistant. The sections below describe what was implemented and keep historical measurements apart from current browser observations.
 
 Evidence: [current mortgage and session-safety UI verification, English PDF opening and stale-form recheck](evaluation.md#failures-and-pivots).
 
