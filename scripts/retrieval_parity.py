@@ -38,6 +38,9 @@ def expected(row: dict) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int)
+    parser.add_argument(
+        "--output", type=Path, default=OUTPUT, help="receipt path; keep earlier ones"
+    )
     args = parser.parse_args()
     rows = json.loads(CONTROL.read_text())["rows"][: args.limit]
     retriever = FrozenRetriever()
@@ -62,8 +65,8 @@ def main() -> None:
                 "trace": got,
             }
         )
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
         json.dumps(
             {
                 "compared": len(comparisons),
@@ -73,7 +76,7 @@ def main() -> None:
             indent=2,
         )
     )
-    print(OUTPUT)
+    print(args.output)
     print(
         json.dumps(
             {
