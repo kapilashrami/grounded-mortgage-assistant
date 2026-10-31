@@ -10,6 +10,8 @@ Demo video (3:32): [youtu.be/_Z884yL753A](https://youtu.be/_Z884yL753A). Interac
 
 ## What it does
 
+<img src="docs/images/chat-draft.png" alt="The application draft card in the chat" width="230" align="right">
+
 - Answers product questions only from reviewed records. Retrieval uses two BGE-M3/FAISS views and a local reranker, and a relevance threshold decides whether the records cover the question at all. The LLM picks which records to cite, and the server shows their reviewed text with sources.
 - Handles mortgage turns with a schema-validated tool call. Python calculates loan-to-value on the amounts the customer typed, so the model never does the arithmetic.
 - Prepares an application draft only when the customer asks for one. One click fills the editable form, and nothing is submitted.
@@ -17,16 +19,11 @@ Demo video (3:32): [youtu.be/_Z884yL753A](https://youtu.be/_Z884yL753A). Interac
 - Traces every turn in an engineering console, with tokens, latency and cost per step.
 - Runs on a local Qwen model or on OpenAI (`gpt-4.1` by default), chosen at startup.
 
-<table>
-  <tr>
-    <td><img src="docs/images/chat-draft.png" alt="The application draft card in the chat"></td>
-    <td><img src="docs/images/console.png" alt="The engineering console showing one turn as a trace"></td>
-  </tr>
-  <tr>
-    <td>The draft card after the customer asks for an application.</td>
-    <td>The engineering console: each step of a turn with its tokens, latency and cost.</td>
-  </tr>
-</table>
+<br clear="right">
+
+![The engineering console showing one turn as a trace](docs/images/console.png)
+
+*The engineering console shows each step of a turn with its tokens, latency and cost.*
 
 ## Install
 
