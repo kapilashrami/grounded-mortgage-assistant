@@ -26,17 +26,12 @@ const get = async path => {
 const number = amount => Number.isFinite(amount) ? amount.toLocaleString('en-US') : null;
 const duration = ms => !Number.isFinite(ms) ? null : ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toFixed(2)} s`;
 const shortId = id => String(id || '').slice(0, 8);
-// Mortgage turns are stored as an upper-case safe projection with amounts masked.
-const PROJECTION_WORDS = { ltv: 'LTV', amount: '‹amount›' };
+// Mortgage turns are stored as a safe projection: readable, with amounts masked.
 const displayQuestion = trace => {
-  const text = trace.question;
-  if (!text) return trace.status === 'REJECTED' ? 'Message withheld by the privacy check' : 'No retained question';
-  if (!/[A-Z]/.test(text) || text !== text.toUpperCase()) return text;
-  const words = text.toLowerCase().split(/\s+/).map(word => PROJECTION_WORDS[word] || word);
-  const joined = words.join(' ');
-  return joined.charAt(0).toUpperCase() + joined.slice(1);
+  if (trace.question) return trace.question;
+  return trace.status === 'REJECTED' ? 'Message withheld by the privacy check' : 'No retained question';
 };
-const isProjection = trace => Boolean(trace.question) && /[A-Z]/.test(trace.question) && trace.question === trace.question.toUpperCase();
+const isProjection = trace => Boolean(trace.question) && trace.question_projection === true;
 const sentence = text => { const value = String(text || '').toLowerCase(); return value.charAt(0).toUpperCase() + value.slice(1); };
 const usd = amount => Number.isFinite(amount) ? `$${Number(amount.toFixed(4))}` : null;
 const pill = (text, className = '', title) => {

@@ -788,19 +788,35 @@ def test_engineering_console_and_its_assets_are_served():
         assert client.get(f"/inspect/static/{asset}").status_code == 200
 
 
-def test_console_trace_label_omits_sentence_punctuation_tokens():
+def test_console_trace_label_reads_as_english_with_punctuation():
     client = TestClient(make_app(interpreter=chat_first_native()))
     chat(client, "s", "calc", "Calculate my loan to value.")
     (trace,) = client.get("/api/traces").json()
-    assert trace["question"] == "CALCULATE MY LTV"
+    assert trace["question"] == "Calculate my LTV."
+    assert trace["question_projection"] is True
 
 
-def test_console_trace_label_omits_commas():
+def test_console_trace_label_masks_amounts_and_keeps_commas():
     client = TestClient(make_app(interpreter=chat_first_native()))
     chat(client, "s", "amounts", AMOUNTS)
     (trace,) = client.get("/api/traces").json()
-    assert "COMMA" not in trace["question"]
-    assert trace["question"].startswith("WHAT IS MY LTV MY EXISTING MORTGAGE")
+    assert trace["question"] == (
+        "What is my LTV, my existing mortgage is ‹amount› "
+        "and property is worth ‹amount›"
+    )
+    assert "2000000" not in trace["question"]
+
+
+def test_console_trace_label_uses_me_after_a_preposition():
+    client = TestClient(make_app(interpreter=chat_first_native()))
+    chat(client, "s", "scope", SCOPE)
+    chat(client, "s", "draft", "Draft an application for me")
+    titles = [trace["question"] for trace in client.get("/api/traces").json()]
+    assert (
+        "I want to refinance my existing mortgage without borrowing more for my house."
+        in titles
+    )
+    assert "Draft an application for me" in titles
 
 
 @pytest.mark.parametrize("model_action", ["acknowledge", "clarify"])

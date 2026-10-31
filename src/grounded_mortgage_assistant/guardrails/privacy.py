@@ -264,6 +264,72 @@ _WORD = re.compile(
     re.IGNORECASE,
 )
 
+# Display words for symbols that several words share or that differ from their
+# lower-case name. Every other vocabulary symbol reads as its lower-case name.
+_DISPLAY_WORDS = {
+    "SELF": "I",
+    "SELF_PLURAL": "we",
+    "THIRD_PARTY": "‹person›",
+    "DO_NOT": "don't",
+    "VALUE_WORD": "value",
+    "FOLLOW_UP": "follow-up",
+    "LTV": "LTV",
+}
+_OBJECT_FORMS = {"SELF": "me"}
+# "me" follows these symbols; elsewhere "I" is used.
+_OBJECT_CONTEXT = frozenset(
+    {"FOR", "TO", "WITH", "ABOUT", "FROM", "OF", "ON", "IN", "HELP", "THANK", "FORGET"}
+)
+_DISPLAY_PUNCTUATION = {
+    **{symbol: mark for mark, symbol in _PUNCTUATION.items()},
+    "QUOTE_START": '"',
+    "QUOTE_END": '"',
+}
+_SENTENCE_ENDS = frozenset({"SENTENCE_END", "QUESTION", "EXCLAMATION"})
+_DISPLAY_SYMBOLS = frozenset(
+    {*_WORDS.values(), *_ALIASES.values(), *_DISPLAY_PUNCTUATION}
+)
+
+
+def display_projection(projection: tuple[str, ...]) -> str:
+    """Render a model projection as readable English for the engineering console.
+
+    Only vocabulary symbols are rendered, so the result carries no more than the
+    projection itself. Protected values and third parties stay masked.
+    """
+    rendered = ""
+    glue_next = True
+    sentence_start = True
+    for index, symbol in enumerate(projection):
+        if symbol in _DISPLAY_PUNCTUATION:
+            opening = symbol == "QUOTE_START"
+            mark = _DISPLAY_PUNCTUATION[symbol]
+            rendered += f" {mark}" if opening and rendered else mark
+            glue_next = opening
+            sentence_start = sentence_start or symbol in _SENTENCE_ENDS
+            continue
+        if symbol.startswith("VALUE("):
+            word = "‹amount›"
+        elif symbol not in _DISPLAY_SYMBOLS:
+            raise IngressError("INVALID_PROJECTION")
+        elif (
+            index
+            and symbol in _OBJECT_FORMS
+            and projection[index - 1] in _OBJECT_CONTEXT
+        ):
+            word = _OBJECT_FORMS[symbol]
+        elif symbol == "FOLLOW_UP" and projection[index + 1 : index + 2] == ("UP",):
+            word = "follow"
+        else:
+            word = _DISPLAY_WORDS.get(symbol, symbol.lower())
+        if sentence_start:
+            word = word[:1].upper() + word[1:]
+            sentence_start = False
+        rendered += word if glue_next else f" {word}"
+        glue_next = False
+    # "an" depends on the sound of the next rendered word, so it is set last.
+    return re.sub(r"\b([Aa]) (?=[aeiouAEIOU]|LTV\b)", r"\1n ", rendered.strip())
+
 
 def _new_ref(prefix: str) -> str:
     return f"{prefix}_{secrets.token_urlsafe(18)}"

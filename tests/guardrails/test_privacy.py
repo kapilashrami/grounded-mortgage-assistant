@@ -2,7 +2,11 @@ from decimal import Decimal
 
 import pytest
 
-from grounded_mortgage_assistant.guardrails.privacy import IngressError, ingest
+from grounded_mortgage_assistant.guardrails.privacy import (
+    IngressError,
+    display_projection,
+    ingest,
+)
 
 
 def test_ingress_replaces_complete_sek_expression_with_owned_opaque_handle():
@@ -73,3 +77,40 @@ def test_quote_and_conditional_boundaries_are_canonicalized():
         "QUOTE_END",
         "SENTENCE_END",
     )
+
+
+@pytest.mark.parametrize(
+    ("text", "expected"),
+    [
+        (
+            "I want to refinance my existing mortgage.",
+            "I want to refinance my existing mortgage.",
+        ),
+        ("Draft an application for me", "Draft an application for me"),
+        (
+            "Can you help me with a extra amount?",
+            "Can you help me with an extra amount?",
+        ),
+        ("what is a LTV", "What is an LTV"),
+        ("i don't need it. thanks", "I don't need it. Thanks"),
+        (
+            'My partner says "we want a better rate"',
+            'My ‹person› says "we want a better rate"',
+        ),
+        ("follow up on the value", "Follow up on the value"),
+        ("a followup", "A follow-up"),
+    ],
+)
+def test_display_projection_reads_as_english(text, expected):
+    assert display_projection(ingest(text).model_projection) == expected
+
+
+def test_display_projection_masks_amounts():
+    turn = ingest("My mortgage is SEK 1,560,000.")
+
+    assert display_projection(turn.model_projection) == "My mortgage is ‹amount›."
+
+
+def test_display_projection_rejects_symbols_outside_the_vocabulary():
+    with pytest.raises(IngressError):
+        display_projection(("SELF", "WANT", "Kartick"))

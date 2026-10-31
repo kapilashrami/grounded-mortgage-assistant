@@ -41,6 +41,7 @@ from grounded_mortgage_assistant.guardrails.pii import (
 from grounded_mortgage_assistant.guardrails.privacy import (
     IngressError,
     detector_text_with_approved_amounts,
+    display_projection,
     ingest,
 )
 from grounded_mortgage_assistant.llm.conversation import (
@@ -84,10 +85,6 @@ def _error(
     code: str, *, status: int = 409, retry: str = "new_message"
 ) -> HTTPException:
     return HTTPException(status, {"code": code, "retry": retry})
-
-
-# Punctuation tokens add noise to the console's safe question label.
-_TRACE_BOUNDARY_TOKENS = frozenset({"SENTENCE_END", "QUESTION", "EXCLAMATION", "COMMA"})
 
 
 def _is_draft_command(turn: Any) -> bool:
@@ -279,6 +276,7 @@ def create_app(
         question: object,
         answer: object,
         started: float,
+        question_projection: bool = False,
         events: list[dict[str, Any]] | None = None,
         evidence_count: int = 0,
         error: str | None = None,
@@ -354,6 +352,7 @@ def create_app(
             "request_kind": request_kind,
             "status": status,
             "question": redact_question(question),
+            "question_projection": question_projection,
             "answer": safe_answer,
             "answer_clipped": answer_clipped,
             "error": error,
@@ -479,6 +478,7 @@ def create_app(
                     "request_kind",
                     "status",
                     "question",
+                    "question_projection",
                     "duration_ms",
                     "created_at",
                     "usage",
@@ -570,6 +570,7 @@ def create_app(
         started = time.monotonic()
         trace_token = TRACE_EVENTS.set([])
         trace_question = ""
+        trace_projection = False
         try:
             detector_text = request.message
             try:
@@ -735,11 +736,8 @@ def create_app(
                     }
             else:
                 turn = ingest(request.message)
-                trace_question = " ".join(
-                    "AMOUNT" if token.startswith("VALUE(") else token
-                    for token in turn.model_projection
-                    if token not in _TRACE_BOUNDARY_TOKENS
-                )
+                trace_question = display_projection(turn.model_projection)
+                trace_projection = True
                 if _is_draft_command(turn):
                     control = record_control_event(
                         session.memory,
@@ -789,6 +787,7 @@ def create_app(
                 request_kind="chat",
                 status=response["status"],
                 question=trace_question,
+                question_projection=trace_projection,
                 answer=response.get("answer"),
                 started=started,
                 events=[
@@ -862,6 +861,7 @@ def create_app(
                     request_kind="chat",
                     status="ERROR",
                     question=trace_question,
+                    question_projection=trace_projection,
                     answer="",
                     started=started,
                     events=TRACE_EVENTS.get() or [],
