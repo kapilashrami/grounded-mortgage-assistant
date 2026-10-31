@@ -69,6 +69,16 @@ _ASSERTION = re.compile(
     r"\b(?:my mortgage is|i owe|change my property|my property value is|i have a mortgage)\b",
     re.IGNORECASE,
 )
+# A number keeps a message off the public path only when it reads as an amount:
+# a currency or scale word, thousand separators, or five or more digits. Years
+# ("in 2022") and percentages ("80% LTV") stay public questions.
+_AMOUNT = re.compile(
+    r"(?:\bsek|[$\u20ac\u00a3])\s*\d"
+    r"|\d(?:[\d\s.,\u00a0\u202f]*\d)?\s*(?:kr|kronor|sek|mkr|mnkr|tkr|kkr|k|m|mn|milj|miljoner|million|millions|thousand)\b"
+    r"|\b\d{1,3}(?:[\s.,\u00a0\u202f]\d{3})+\b"
+    r"|\d{5,}",
+    re.IGNORECASE,
+)
 _QUESTION = re.compile(
     r"\?|\b(?:what|when|where|who|why|how|can|could|would|is|are|do|does|explain|tell me about)\b",
     re.IGNORECASE,
@@ -116,7 +126,7 @@ class PublicQuestionScope:
     @staticmethod
     def is_public_question(raw: str) -> bool:
         return bool(_QUESTION.search(raw)) and not bool(
-            re.search(r"\d", raw)
+            _AMOUNT.search(raw)
             or _EXECUTION.search(raw)
             or _ASSERTION.search(raw)
             or re.search(r"\b(?:my|our)\s+ltv\b", raw, re.IGNORECASE)
