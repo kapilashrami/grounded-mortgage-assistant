@@ -337,9 +337,10 @@ function flowPanel(trace, inspector) {
       if (event.name === 'privacy') details.push(['Reason', privacyReason(event) || 'No reason recorded.']);
       if (event.name === 'clarify_decision') {
         details.push(['Reason', FLOW_REASONS[event.reason] || 'Clarification was recorded.']);
+        if (event.cause) details.push(['Rejected by', event.cause]);
       }
       const remaining = Object.entries(event).filter(([key]) => ![
-        'name', 'result', 'kind', 'duration_ms', 'model', 'provider_input_tokens', 'output_tokens', 'count', 'reason',
+        'name', 'result', 'kind', 'duration_ms', 'model', 'provider_input_tokens', 'output_tokens', 'count', 'reason', 'cause',
       ].includes(key));
       details.push(...remaining.map(([key, content]) => [key, typeof content === 'object' ? JSON.stringify(content) : content]));
       const actions = element('div', undefined, 'flow-actions');

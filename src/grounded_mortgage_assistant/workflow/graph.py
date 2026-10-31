@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Awaitable, Callable
 from dataclasses import replace
 from datetime import UTC, datetime
@@ -80,7 +81,20 @@ def memory_receipt(memory: Memory, staged: Any) -> dict[str, Any]:
     ).model_dump()
 
 
-def _restrictive(state: GraphState, code: str, layer: str) -> dict[str, Any]:
+def _rejection_cause(error: Exception) -> str:
+    """Name the failed check with a fixed code; error text is never recorded."""
+    category = getattr(error, "category", None)
+    code = category if isinstance(category, str) else (error.args[:1] or [""])[0]
+    if isinstance(code, str) and re.fullmatch(r"[A-Z][A-Z0-9_]{2,63}", code):
+        return code
+    return (
+        "UNCLASSIFIED_" + re.sub(r"[^A-Z0-9_]", "", type(error).__name__.upper())[:40]
+    )
+
+
+def _restrictive(
+    state: GraphState, code: str, layer: str, *, cause: str | None = None
+) -> dict[str, Any]:
     staged = stage_uninterpreted_turn(
         state["memory"],
         state["turn"],
@@ -95,6 +109,7 @@ def _restrictive(state: GraphState, code: str, layer: str) -> dict[str, Any]:
             "KNOWLEDGE_QUERY_UNAVAILABLE": "evidence_unavailable",
             "EVIDENCE_UNAVAILABLE": "evidence_unavailable",
         }[code],
+        cause=cause,
     )
     return {
         "memory": staged.state,
@@ -208,11 +223,11 @@ async def interpret(state: GraphState) -> dict[str, Any]:
         if proposal.requested_action == "knowledge" and not knowledge_query_is_eligible(
             proposal
         ):
-            raise ValueError("empty knowledge query")
+            raise ValueError("EMPTY_KNOWLEDGE_QUERY")
         if proposal.requested_action == "calculate" and (
             proposal.subject != "self" or proposal.conditional
         ):
-            raise ValueError("nonpersonal calculation")
+            raise ValueError("NONPERSONAL_CALCULATION")
         # Source-proved negation/ambiguity wins over a well-formed selection.
         # It is deliberately derived from the original state before inference.
         if restrictive.changes and {"NOT", "DO_NOT", "MAYBE", "OR"}.intersection(
@@ -234,8 +249,13 @@ async def interpret(state: GraphState) -> dict[str, Any]:
             proposal,
             client_message_id=state["message_id"],
         )
-    except Exception:  # noqa: BLE001 - all model/provenance errors fail closed.
-        return _restrictive(state, "INTERPRETATION_FAILED", "interpretation")
+    except Exception as error:  # noqa: BLE001 - all model/provenance errors fail closed.
+        return _restrictive(
+            state,
+            "INTERPRETATION_FAILED",
+            "interpretation",
+            cause=_rejection_cause(error),
+        )
     return {"interpreted": result, "staged": staged}
 
 

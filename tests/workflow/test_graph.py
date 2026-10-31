@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import asyncio
 
+import pytest
+
 from grounded_mortgage_assistant.guardrails.privacy import ingest
 from grounded_mortgage_assistant.llm.conversation import InterpretationResult
 from grounded_mortgage_assistant.state.memory import (
@@ -9,6 +11,7 @@ from grounded_mortgage_assistant.state.memory import (
     Memory,
     TurnInterpretation,
 )
+from grounded_mortgage_assistant.tracing import TRACE_EVENTS, clarify_decision
 from grounded_mortgage_assistant.workflow.graph import build_graph
 
 
@@ -64,3 +67,56 @@ def test_empty_native_knowledge_query_fails_closed_without_positive_commit():
     )
     assert state["response"]["status"] == "CLARIFY"
     assert state["memory"].facts == {}
+
+
+def _decisions(turn, interpretation):
+    async def native(_, __):
+        return result(interpretation)
+
+    events: list[dict] = []
+    token = TRACE_EVENTS.set(events)
+    try:
+        state = asyncio.run(
+            build_graph().ainvoke(
+                {
+                    "memory": Memory(),
+                    "turn": turn,
+                    "message_id": "m",
+                    "interpreter": native,
+                }
+            )
+        )
+    finally:
+        TRACE_EVENTS.reset(token)
+    return state, [e for e in events if e["name"] == "clarify_decision"]
+
+
+def test_rejected_interpretation_records_which_check_failed():
+    turn = ingest(
+        "My existing mortgage is 2000000 and property is worth 2500000, what is my LTV?",
+        turn_ref="t",
+    )
+    conditional = proposal(turn, action="calculate").model_copy(
+        update={"conditional": True}
+    )
+    state, decisions = _decisions(turn, conditional)
+    assert state["response"]["status"] == "CLARIFY"
+    assert decisions == [
+        {
+            "name": "clarify_decision",
+            "result": "stopped",
+            "layer": "interpretation",
+            "reason": "interpretation_unavailable",
+            "cause": "NONPERSONAL_CALCULATION",
+        }
+    ]
+
+
+def test_clarification_cause_must_be_a_fixed_code():
+    with pytest.raises(ValueError):
+        clarify_decision(
+            "interpretation",
+            "interpretation_unavailable",
+            [],
+            cause="my mortgage is 2m",
+        )
