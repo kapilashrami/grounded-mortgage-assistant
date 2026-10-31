@@ -11,7 +11,7 @@ The work happened in three stages. The retrieval study came first, in an earlier
 | Stage | Work | Result |
 | --- | --- | --- |
 | Earlier capstone phase | [Chunking, embedding and index study](#earlier-retrieval-study) | Whole Q&A + BGE-M3 + HNSW32 chosen; held-out 26/28 vs 25/28 |
-| Framework build | [LLM-as-a-judge](#llm-as-a-judge) on an earlier hosted configuration | Stopped after 305 valid grades of 549 |
+| Framework build | [LLM-as-a-judge](#llm-as-a-judge) on an earlier hosted configuration | 547 valid grades of 549 after a completion run; no clear winner |
 | | [Framework integration parity](#retrieval-parity) | 159/159 exact matches |
 | | [Local BGE vs Cohere reranker](#reranker-comparison) | 129/149 vs 131/149; local BGE kept |
 | | Hosted gpt-5.4-mini state diagnostic | Stopped at a failed correction scenario |
@@ -121,11 +121,22 @@ Retrieval metrics show whether the right evidence was found. They do not show wh
 
 An earlier hosted configuration generated answers for 159 questions in each of four retrieval setups (arms), giving 549 unique answers that cover 636 arm-question evaluations. Before use, the `gpt-6-sol` judge agreed with reference labels on 28 of 30 acceptance decisions.
 
-The grading stopped when the OpenAI spend limit was hit, after 305 valid grades out of 549 answers, so it cannot pick a winner yet. The quota rejected another 242 requests (HTTP 429), and 2 grades were internally inconsistent and count as invalid. A quota rejection is a missing grade, not a failed answer. Valid coverage per arm ranged from 23 to 157, and grading did not stop at random, so comparing acceptance rates across arms would be unfair. Only 10 questions were graded for every arm, and on those, 7 or 8 of 10 answers were fully accepted in each arm. All 10 are answerable, exposed development or diagnostic cases, which is far too few to separate the arms across 159 questions.
+The first run stopped at the OpenAI spend limit after 305 valid grades out of 549 answers. The quota rejected 242 requests (HTTP 429), and 2 grades were internally inconsistent. A quota rejection is a missing grade, not a failed answer. On 31 October 2026 I graded the 242 missing answers with the same judge model, prompt, schema, settings and validator, and all 242 came back valid. The 2 inconsistent grades stay invalid, because the study ruled out retrying a grade after seeing it. No saved grade was changed.
 
-The grades are model judgments and should be treated as provisional. The judge model also generated the answers, and the reference labels were agent adjudications.
+Every arm now has 157 or 159 valid grades. On the 157 questions graded in all four arms:
 
-The remaining answers will be graded with the same judge. The 244 missing judgments (242 quota rejections plus 2 inconsistent) will use the same model, prompt and schema, so all 636 evaluations share one judge. Switching judges would mean calibrating a new one and regrading all 549 answers.
+| Arm | Fully accepted | Completeness | Grounding | Source qualification |
+| --- | ---: | ---: | ---: | ---: |
+| EmbeddingGemma-2, fixed 256 chunks, rerank | 130/157 | 139/157 | 154/157 | 138/152 |
+| Two-view BGE-M3, rerank | 126/157 | 135/157 | 151/157 | 138/153 |
+| Whole Q&A BGE-M3, rerank | 124/157 | 132/157 | 153/157 | 141/153 |
+| Swedish corpus, BGE-M3 dense, no rerank (control) | 120/157 | 131/157 | 155/157 | 133/153 |
+
+Source qualification leaves out the questions the judge marked not applicable. Language passed on every answer in every arm.
+
+EmbeddingGemma-2 had the most fully accepted answers, but no pair of arms differs by a clear margin. An exact McNemar test on the questions where two arms disagree gives p values between 0.08 and 0.75, so the judge does not name a winner. The three English arms sit close together, and the Swedish control, which also had no reranker, accepted the fewest. The runtime's design, two-view BGE-M3 with reranking, is in the middle of the English arms. Per-question results and all seven dimensions are in [llm-judge.json](results/llm-judge.json).
+
+The grades are model judgments on exposed development and diagnostic cases, not human gold. The judge model also generated the answers, and the reference labels were agent adjudications. The missing grades were made a day or two after the first batch under the same model name, and I can't rule out that the provider changed the model in between.
 
 ## Failures and pivots
 

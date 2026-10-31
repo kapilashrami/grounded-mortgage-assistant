@@ -1,13 +1,13 @@
 {
   "study": "LLM-as-a-judge evaluation of generated answers across four retrieval configurations",
-  "date": "2026-10-29",
-  "status": "incomplete",
+  "date": "2026-10-29 (first run), 2026-10-31 (completion run)",
+  "status": "complete",
   "source": [
     "private project evidence (not published)"
   ],
   "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "A calibrated LLM judge graded generated answers for 159 questions per retrieval configuration (arm) on seven dimensions (completeness, grounding, citation locality, calibration, language, source qualification, dialogue context) plus an overall fully-accepted label.",
-  "what_it_does_not_show": "A winner. Grading stopped at the project spend limit, nonrandomly, so valid coverage per arm ranges from 23 to 157 and acceptance rates on those unequal denominators are not compared. The 10-case common slice contains only answerable, exposed development or diagnostic cases. Judgments are provisional model grades, not human gold. This study used an earlier hosted configuration, not the current runtime.",
+  "what_it_does_not_show": "A winner. On the 157 questions graded in every arm, no pairwise difference in full acceptance is clear (exact McNemar p between 0.08 and 0.75). Judgments are model grades on exposed development and diagnostic cases, not human gold; the judge model also generated the answers. This study used an earlier hosted configuration, not the current runtime. The completion run used the same model name a day or two later; a provider-side model change in between cannot be ruled out.",
   "judge_model": "gpt-6-sol",
   "generator_model_returned": "gpt-6-sol",
   "arms": 4,
@@ -15,18 +15,63 @@
   "logical_evaluations": 636,
   "generated_answers_unique": 549,
   "duplicate_generations_avoided": 87,
-  "judge_requests": {
-    "total": 549,
-    "valid": 305,
-    "quota_rejected_http_429_spend_limit": 242,
-    "internal_consistency_failed": 2
+  "first_run": {
+    "judge_requests": {
+      "total": 549,
+      "valid": 305,
+      "quota_rejected_http_429_spend_limit": 242,
+      "internal_consistency_failed": 2
+    },
+    "logical_evaluation_coverage": {
+      "valid_completed": 367,
+      "quota_rejected": 267,
+      "internal_consistency_failed": 2,
+      "total": 636,
+      "interpretation": "Shared reviews bind to several arms, so per-arm counts sum to 636 logical evaluations (367 valid, 267 quota-rejected, 2 inconsistent) while unique judge requests sum to 549."
+    },
+    "per_arm_coverage": {
+      "english-balanced-10x2-rerank": {
+        "valid_judged": 71,
+        "quota_rejected": 88,
+        "inconsistent": 0
+      },
+      "english-whole-qa-clean-rerank": {
+        "valid_judged": 116,
+        "quota_rejected": 43,
+        "inconsistent": 0
+      },
+      "117ca79fe094e5ba": {
+        "valid_judged": 157,
+        "quota_rejected": 0,
+        "inconsistent": 2
+      },
+      "swedish-clean-dense-english-query-control": {
+        "valid_judged": 23,
+        "quota_rejected": 136,
+        "inconsistent": 0
+      }
+    }
   },
-  "logical_evaluation_coverage": {
-    "valid_completed": 367,
-    "quota_rejected": 267,
-    "internal_consistency_failed": 2,
-    "total": 636,
-    "interpretation": "Shared reviews bind to several arms, so per-arm counts sum to 636 logical evaluations (367 valid, 267 quota-rejected, 2 inconsistent) while unique judge requests sum to 549."
+  "completion_run": {
+    "date": "2026-10-31",
+    "graded": "the 242 judge requests the first run lost to HTTP 429 spend-limit rejections",
+    "contract": "same model, prompt, schema, reasoning effort none, 3,000 completion tokens and semantic validator; request hashes verified unchanged",
+    "results": {
+      "valid": 242,
+      "inconsistent": 0,
+      "transport_failures": 0
+    },
+    "not_regraded": "the 2 internally inconsistent first-run grades stay invalid (no outcome retries)",
+    "returned_token_usage": {
+      "prompt_tokens": 1076949,
+      "completion_tokens": 262567,
+      "responses": 242
+    }
+  },
+  "final_judge_requests": {
+    "total": 549,
+    "valid": 547,
+    "internal_consistency_failed": 2
   },
   "inconsistent_grades": [
     {
@@ -40,162 +85,1650 @@
       "outcome": "invalid (internal-consistency failure)"
     }
   ],
-  "per_arm_coverage": {
+  "valid_coverage_per_arm": {
+    "english-balanced-10x2-rerank": 159,
+    "english-whole-qa-clean-rerank": 159,
+    "117ca79fe094e5ba": 157,
+    "swedish-clean-dense-english-query-control": 159
+  },
+  "generator_response_status_counts": {
     "english-balanced-10x2-rerank": {
-      "generated": 159,
-      "valid_judged": 71,
-      "quota_rejected": 88,
-      "inconsistent": 0,
-      "generator_response_status_counts": {
-        "ANSWERED": 142,
-        "UNSUPPORTED": 16,
-        "CLARIFY": 1
-      },
-      "common_slice_fully_accepted": "7/10"
+      "ANSWERED": 142,
+      "UNSUPPORTED": 16,
+      "CLARIFY": 1
     },
     "english-whole-qa-clean-rerank": {
-      "generated": 159,
-      "valid_judged": 116,
-      "quota_rejected": 43,
-      "inconsistent": 0,
-      "generator_response_status_counts": {
-        "ANSWERED": 140,
-        "CLARIFY": 1,
-        "UNSUPPORTED": 18
-      },
-      "common_slice_fully_accepted": "7/10"
+      "ANSWERED": 140,
+      "CLARIFY": 1,
+      "UNSUPPORTED": 18
     },
     "117ca79fe094e5ba": {
-      "generated": 159,
-      "valid_judged": 157,
-      "quota_rejected": 0,
-      "inconsistent": 2,
-      "generator_response_status_counts": {
-        "ANSWERED": 138,
-        "UNSUPPORTED": 21
-      },
-      "common_slice_fully_accepted": "8/10"
+      "ANSWERED": 138,
+      "UNSUPPORTED": 21
     },
     "swedish-clean-dense-english-query-control": {
-      "generated": 159,
-      "valid_judged": 23,
-      "quota_rejected": 136,
-      "inconsistent": 0,
-      "generator_response_status_counts": {
-        "ANSWERED": 131,
-        "CLARIFY": 1,
-        "UNSUPPORTED": 27
-      },
-      "common_slice_fully_accepted": "7/10"
+      "ANSWERED": 131,
+      "CLARIFY": 1,
+      "UNSUPPORTED": 27
     }
   },
-  "per_arm_valid_range": [
-    23,
-    157
-  ],
-  "common_slice": {
-    "n": 10,
-    "composition": {
-      "development": 7,
-      "additive_gap_development": 1,
-      "diagnostic": 2,
-      "answerable": 10
+  "paired_comparison": {
+    "n": 157,
+    "note": "Questions with a valid grade in all four arms. Dimension counts give pass, fail and not_applicable.",
+    "results_by_arm": {
+      "english-balanced-10x2-rerank": {
+        "fully_accepted": 126,
+        "completeness": {
+          "pass": 135,
+          "fail": 22
+        },
+        "grounding": {
+          "pass": 151,
+          "fail": 6
+        },
+        "citation_locality": {
+          "pass": 146,
+          "not_applicable": 1,
+          "fail": 10
+        },
+        "calibration": {
+          "pass": 151,
+          "fail": 6
+        },
+        "language": {
+          "pass": 157
+        },
+        "source_qualification": {
+          "pass": 138,
+          "fail": 15,
+          "not_applicable": 4
+        },
+        "dialogue_context": {
+          "pass": 152,
+          "fail": 5
+        }
+      },
+      "english-whole-qa-clean-rerank": {
+        "fully_accepted": 124,
+        "completeness": {
+          "pass": 132,
+          "fail": 25
+        },
+        "grounding": {
+          "pass": 153,
+          "fail": 4
+        },
+        "citation_locality": {
+          "pass": 146,
+          "not_applicable": 3,
+          "fail": 8
+        },
+        "calibration": {
+          "pass": 151,
+          "fail": 6
+        },
+        "language": {
+          "pass": 157
+        },
+        "source_qualification": {
+          "pass": 141,
+          "fail": 12,
+          "not_applicable": 4
+        },
+        "dialogue_context": {
+          "pass": 150,
+          "fail": 7
+        }
+      },
+      "117ca79fe094e5ba": {
+        "fully_accepted": 130,
+        "completeness": {
+          "pass": 139,
+          "fail": 18
+        },
+        "grounding": {
+          "pass": 154,
+          "fail": 3
+        },
+        "citation_locality": {
+          "pass": 148,
+          "fail": 8,
+          "not_applicable": 1
+        },
+        "calibration": {
+          "pass": 155,
+          "fail": 2
+        },
+        "language": {
+          "pass": 157
+        },
+        "source_qualification": {
+          "pass": 138,
+          "fail": 14,
+          "not_applicable": 5
+        },
+        "dialogue_context": {
+          "pass": 157
+        }
+      },
+      "swedish-clean-dense-english-query-control": {
+        "fully_accepted": 120,
+        "completeness": {
+          "pass": 131,
+          "fail": 26
+        },
+        "grounding": {
+          "pass": 155,
+          "fail": 2
+        },
+        "citation_locality": {
+          "pass": 143,
+          "not_applicable": 3,
+          "fail": 11
+        },
+        "calibration": {
+          "pass": 152,
+          "fail": 5
+        },
+        "language": {
+          "pass": 157
+        },
+        "source_qualification": {
+          "pass": 133,
+          "fail": 20,
+          "not_applicable": 4
+        },
+        "dialogue_context": {
+          "pass": 154,
+          "fail": 3
+        }
+      }
     },
-    "fully_accepted_by_arm": {
-      "english-balanced-10x2-rerank": "7/10",
-      "english-whole-qa-clean-rerank": "7/10",
-      "117ca79fe094e5ba": "8/10",
-      "swedish-clean-dense-english-query-control": "7/10"
+    "fully_accepted_by_answerability": {
+      "answerable": {
+        "cases": 146,
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": 119,
+          "english-whole-qa-clean-rerank": 117,
+          "117ca79fe094e5ba": 122,
+          "swedish-clean-dense-english-query-control": 114
+        }
+      },
+      "partial": {
+        "cases": 3,
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": 0,
+          "english-whole-qa-clean-rerank": 0,
+          "117ca79fe094e5ba": 0,
+          "swedish-clean-dense-english-query-control": 0
+        }
+      },
+      "unsupported": {
+        "cases": 8,
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": 7,
+          "english-whole-qa-clean-rerank": 7,
+          "117ca79fe094e5ba": 8,
+          "swedish-clean-dense-english-query-control": 6
+        }
+      }
     },
+    "pairwise_fully_accepted": [
+      {
+        "a": "english-balanced-10x2-rerank",
+        "b": "english-whole-qa-clean-rerank",
+        "only_a_accepted": 6,
+        "only_b_accepted": 4,
+        "exact_mcnemar_p": 0.7539
+      },
+      {
+        "a": "english-balanced-10x2-rerank",
+        "b": "117ca79fe094e5ba",
+        "only_a_accepted": 10,
+        "only_b_accepted": 14,
+        "exact_mcnemar_p": 0.5413
+      },
+      {
+        "a": "english-balanced-10x2-rerank",
+        "b": "swedish-clean-dense-english-query-control",
+        "only_a_accepted": 15,
+        "only_b_accepted": 9,
+        "exact_mcnemar_p": 0.3075
+      },
+      {
+        "a": "english-whole-qa-clean-rerank",
+        "b": "117ca79fe094e5ba",
+        "only_a_accepted": 8,
+        "only_b_accepted": 14,
+        "exact_mcnemar_p": 0.2863
+      },
+      {
+        "a": "english-whole-qa-clean-rerank",
+        "b": "swedish-clean-dense-english-query-control",
+        "only_a_accepted": 16,
+        "only_b_accepted": 12,
+        "exact_mcnemar_p": 0.5716
+      },
+      {
+        "a": "117ca79fe094e5ba",
+        "b": "swedish-clean-dense-english-query-control",
+        "only_a_accepted": 18,
+        "only_b_accepted": 8,
+        "exact_mcnemar_p": 0.0755
+      }
+    ],
     "cases": [
       {
+        "case_id": "DEV-blog-business-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-business-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-business-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-mortgage-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-mortgage-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-mortgage-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-private-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-private-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-blog-private-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-business-loan-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
         "case_id": "DEV-business-loan-02",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "not accepted",
-          "english-whole-qa-clean-rerank": "not accepted",
-          "117ca79fe094e5ba": "not accepted",
-          "swedish-clean-dense-english-query-control": "not accepted"
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-business-loan-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-business-loan-04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-business-loan-05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
         }
       },
       {
         "case_id": "DEV-business-loan-06",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
         }
       },
       {
-        "case_id": "DEV-kreddy-02",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
-        }
-      },
-      {
-        "case_id": "DEV-glossary-01",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
-        }
-      },
-      {
-        "case_id": "DEV-glossary-02",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
-        }
-      },
-      {
-        "case_id": "DEV-privacy-policies-01",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "not accepted",
-          "english-whole-qa-clean-rerank": "not accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
+        "case_id": "DEV-collection-overview-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
         }
       },
       {
         "case_id": "DEV-collection-overview-02",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "not accepted"
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
         }
       },
       {
-        "case_id": "gap-DEMO-INCOME-008",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
+        "case_id": "DEV-company-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-company-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-consumer-loan-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-consumer-loan-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-consumer-loan-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-consumer-loan-04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-consumer-loan-05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-consumer-loan-06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-glossary-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-glossary-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-guides-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-guides-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-insurance-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-insurance-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-insurance-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-insurance-04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-insurance-05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-insurance-06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-mortgage-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-mortgage-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-mortgage-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-mortgage-04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "DEV-mortgage-05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-mortgage-06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-partners-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-partners-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-privacy-policies-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-privacy-policies-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-support-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "DEV-support-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-A01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-A02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-A03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-A04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-B01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-B02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-B03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-B04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-B05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-B06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-B07",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-B08",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-B09",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-B10",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
         }
       },
       {
         "case_id": "SF-C01",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "not accepted",
-          "english-whole-qa-clean-rerank": "not accepted",
-          "117ca79fe094e5ba": "not accepted",
-          "swedish-clean-dense-english-query-control": "not accepted"
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-C02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-C03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-C05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-C06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
         }
       },
       {
         "case_id": "SF-C07",
-        "by_arm": {
-          "english-balanced-10x2-rerank": "accepted",
-          "english-whole-qa-clean-rerank": "accepted",
-          "117ca79fe094e5ba": "accepted",
-          "swedish-clean-dense-english-query-control": "accepted"
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-C08",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-C09",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-C10",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-C11",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-D01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-D02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-D03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-D04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-D05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-D06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-G01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-G02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-G03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-G04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-L01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-L02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-M01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-M02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-M03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-M04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-M05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-M06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-M07",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-M08",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-M09",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-O01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-O02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-O03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-O04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-O05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-O06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-T01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "SF-T02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-T03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-T04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "SF-T05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "TEST-blog-business-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-blog-business-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-blog-mortgage-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-blog-mortgage-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-blog-private-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-blog-private-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-business-loan-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-business-loan-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-business-loan-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-collection-overview-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-company-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-consumer-loan-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "TEST-consumer-loan-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-consumer-loan-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-glossary-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-guides-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-insurance-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-insurance-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-insurance-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-kreddy-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-kreddy-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-kreddy-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-mortgage-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "TEST-mortgage-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-mortgage-03",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-partners-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": false,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "TEST-privacy-policies-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "TEST-support-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-01",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-02",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-04",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-05",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-06",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": false
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-07",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-08",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "UNSUPPORTED-09",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-001",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-002",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-003",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-004",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-005",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-006",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-007",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-008",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-009",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-010",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-MORTGAGE-001",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": true,
+          "english-whole-qa-clean-rerank": true,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
+        }
+      },
+      {
+        "case_id": "gap-DEMO-WITHDRAWAL-001",
+        "fully_accepted": {
+          "english-balanced-10x2-rerank": false,
+          "english-whole-qa-clean-rerank": false,
+          "117ca79fe094e5ba": true,
+          "swedish-clean-dense-english-query-control": true
         }
       }
     ]
@@ -209,16 +1742,11 @@
     "dimension_cell_agreement_rate": 0.9048,
     "limits": "References are agent adjudications, not independent human gold; agreement cells were not independently revalidated."
   },
-  "returned_token_usage": {
+  "first_run_returned_token_usage": {
     "generator_total_tokens": 1208963,
     "judge_total_tokens": 1609599,
     "calibration_total_tokens": 171471,
     "note": "Quota-rejected requests returned no usage. Monetary billing was not accessed."
   },
-  "arm_ids_note": "Arm 117ca79fe094e5ba is a configuration hash from the retrieval lab.",
-  "follow_up": {
-    "status": "planned",
-    "plan": "Grade the 244 missing judgments (242 quota rejections and 2 inconsistent grades) with the same judge model, prompt and schema, so all 636 evaluations share one judge, then report complete denominators and either a justified winner or a plain statement that none emerged.",
-    "why_same_judge": "Mixing judges would make the arms incomparable; a different judge would have to regrade all 549 answers after its own calibration run."
-  }
+  "arm_ids_note": "Arm 117ca79fe094e5ba is a configuration hash from the retrieval lab."
 }

@@ -49,7 +49,7 @@ The tests need no corpus and no model. Running the backend needs both, plus the 
 
 ## Results
 
-On development cases, the relevance threshold of 0.23 keeps 142 of 146 answerable questions and rejects 7 of 9 that the records can't answer. In the real website, the full journey passes 16 of 16 checks and a set of 20 questions passes 19, on both local Qwen and GPT-4.1. The local reranker stayed after a comparison with Cohere, which gained a few cases and lost others. The LLM-as-a-judge run stopped at my OpenAI spend limit after 305 of 549 answers, so it can't name a winner yet; I'll finish grading the rest with the same judge. Details are in [docs/evaluation.md](docs/evaluation.md).
+On development cases, the relevance threshold of 0.23 keeps 142 of 146 answerable questions and rejects 7 of 9 that the records can't answer. In the real website, the full journey passes 16 of 16 checks and a set of 20 questions passes 19, on both local Qwen and GPT-4.1. The local reranker stayed after a comparison with Cohere, which gained a few cases and lost others. The LLM-as-a-judge run is complete: on the 157 questions graded in all four retrieval setups, 120 to 130 answers were fully accepted per setup, and no difference between setups is clear enough to name a winner. Details are in [docs/evaluation.md](docs/evaluation.md).
 
 ## Failure analysis
 
