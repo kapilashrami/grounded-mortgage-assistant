@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product chat and mortgage assistant</title>
+<meta name="description" content="Technical documentation for a grounded mortgage chat assistant: retrieval, workflow, evaluation and limits.">
+<!-- Reading view of technical-documentation.md, rendered with GitHub Flavored Markdown. -->
+<style>
+  :root {
+    --text: #242424;
+    --muted: #6b6b6b;
+    --rule: #e8e8e8;
+    --bg: #ffffff;
+    --code-bg: #f2f2f2;
+    --link: inherit;
+    --link-line: rgba(36, 36, 36, 0.35);
+    --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text: #e6e6e6;
+      --muted: #a3a3a3;
+      --rule: #2e2e2e;
+      --bg: #121212;
+      --code-bg: #1f1f1f;
+      --link-line: rgba(230, 230, 230, 0.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.6;
+    letter-spacing: -0.003em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: saturate(180%) blur(8px);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .bar-inner {
+    max-width: 728px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .bar a { color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .bar .links { display: flex; gap: 18px; }
+  .nowrap { white-space: nowrap; }
+  .bar a:hover { color: var(--text); }
+  .bar .home { color: var(--text); font-weight: 600; }
+  main {
+    max-width: 728px;
+    margin: 0 auto;
+    padding: 56px 24px 120px;
+  }
+  h1, h2, h3 {
+    font-family: var(--sans);
+    color: var(--text);
+    letter-spacing: -0.016em;
+  }
+  h1 {
+    font-size: 42px;
+    line-height: 1.2;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+  .byline {
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--muted);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h2 {
+    font-size: 26px;
+    line-height: 1.3;
+    font-weight: 700;
+    margin: 56px 0 12px;
+    scroll-margin-top: 72px;
+  }
+  p { margin: 0 0 28px; }
+  ul { margin: 0 0 28px; padding-left: 28px; }
+  li { margin-bottom: 10px; padding-left: 4px; }
+  a {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-color: var(--link-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  a:hover { text-decoration-color: currentColor; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    background: var(--code-bg);
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+  .table-wrap {
+    margin: 8px -24px 36px;
+    padding: 0 24px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: 12px 14px 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td:first-child { min-width: 180px; }
+  td { min-width: 140px; }
+  footer {
+    margin-top: 72px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--sans);
+    font-size: 15px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); }
+  @media (max-width: 600px) {
+    body { font-size: 18px; line-height: 1.58; }
+    main { padding-top: 36px; }
+    .bar-inner { padding: 12px 20px; }
+    .bar .home { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 22px; margin-top: 44px; }
+    p { margin-bottom: 24px; }
+  }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-inner">
+    <a class="home" href="https://github.com/kapilashrami/grounded-mortgage-assistant">Grounded Mortgage Assistant</a>
+    <span class="links"><a href="architecture/overview.html">Architecture</a><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/technical-documentation.md">Markdown</a></span>
+  </div>
+</header>
+<main>
+  <article>
+    <h1>Product chat and mortgage assistant</h1>
+    <div class="byline">Technical documentation | October 2026 <span class="nowrap">&middot; 11 min read</span></div>
+<h2 id="1-problem-scope-and-demonstrated-journey">1. Problem, scope and demonstrated journey</h2>
+<p>This project was built for a Swedish loan comparison company. Mortgages, consumer loans, business loans and insurance come with complex rules and conditions, and a customer reading about a loan often needs an explanation, a calculation and help moving the same details into an application form. An AI assistant that can answer basic to complex questions can take this work off customer agents, so they can focus on handling applications and converting them. The assistant described here is meant to help customers through those rules. It has to keep source conditions attached to its answers, calculate from the customer's own inputs and leave the customer in control of the form.</p>
+<p>The prototype answers product questions from reviewed English evidence and demonstrates an existing-mortgage refinance journey. It runs on local Qwen by default, and the recorded demo uses OpenAI <code>gpt-4.1</code> through the same validated interface. The customer asks what a mortgage is, checks an illustrative loan-to-value (LTV) calculation, gives refinance details and explicitly asks for an application draft. One Start application action opens the editable mortgage form with the supported fields filled in. With a SEK 2,000,000 mortgage and a SEK 2,500,000 property value, the observed LTV is 80.00%. The assistant does not submit an application or decide lending eligibility.</p>
+<p>The knowledge corpus covers consumer loans, business loans, mortgages, insurance and Kreddy, the company's personal finance management (PFM) app. The only demonstrated handoff is Refinance without additional borrowing. One successful example does not show that conversations are reliable in general, and business impact is still an unmeasured hypothesis.</p>
+<p>The project adds an independent FastAPI/LangGraph backend and a local integration. It reuses the company's Gatsby interface and capstone source material that had already been reviewed. The proprietary frontend stays outside this repository, with 15 saved page contexts for offline browsing, so routes without saved content may be unavailable. Everything runs locally on synthetic financial values, and submission, BankID, credit checks and analytics are blocked.</p>
+<p>The <a href="capstone-one-ish-pager.pdf">design one-pager</a> planned a hosted, bilingual assistant. The sections below describe what was implemented and keep historical measurements apart from current browser observations.</p>
+<p>Evidence: <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#failures-and-pivots">current mortgage and session-safety UI verification, English PDF opening and stale-form recheck</a>.</p>
+<div></div>
+<h2 id="2-source-preparation-and-retrieval">2. Source preparation and retrieval</h2>
+<p>The runtime searches a frozen collection of 1,476 reviewed English records, prepared from captured public-source material. The original Swedish PDFs are kept for provenance. Each record carries product scope, applicability, qualifications, source context and version information. Before using the saved indexes, the runtime validates artifact hashes and row order. It does not crawl websites or rebuild the corpus during a customer turn.</p>
+<p>Search uses two representations of the same records. Pinned BGE-M3 embeddings encode the query, and each FAISS HNSW index returns ten candidates. The service unions the candidates and scores them with the local <code>bge-reranker-v2-m3</code> cross-encoder against the cleaned search text. Equivalent evidence is removed, and at most five records are packed within 12,000 characters. The concise search text helps matching, and the richer answer context keeps the source qualifications.</p>
+<p>Public questions go straight to retrieval. The reranker score of the best candidate decides whether the corpus covers the question. Below 0.23, the assistant says it could not find the answer and does not call the model. The threshold was <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/results/relevance-gate.json">calibrated</a> on the audited English cases as the highest value that keeps at least 97% of supported cases. At that value, 142 of 146 supported cases were kept and 7 of 9 unsupported cases were rejected (<a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#relevance-gate">details</a>). Partner-specific records are dropped unless the question names the partner, so a broad question cannot pick up one lender's terms. The gate replaced an earlier lexical product projector, which mapped <code>What is a business loan?</code> to contact information and never retrieved the record describing the company itself.</p>
+<p>The model selects IDs from the current evidence pack, which holds only records the server can cite. The server checks membership and renders the matching reviewed extracts, so the displayed answer is extractive. Unrestricted synthesis is not used on this path. A valid citation proves where an extract came from, but relevance and missing conditions still need review. The chat shows source-website and PDF links and has no separate qualifications panel. Source conditions stay in the retrieval metadata and should be checked against the linked evidence.</p>
+<p>Each answer links the source website and a local English PDF citation. The 16 generated English PDFs link to their Swedish originals, and their manifest binds record and page mappings to the frozen corpus hashes. A captured source is evidence for this demonstration only and may not match today's lending policy.</p>
+<p>Implementation: <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/src/grounded_mortgage_assistant/rag/retrieval.py">frozen retrieval</a>, <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/src/grounded_mortgage_assistant/rag/public_questions.py">public question routing</a>, <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/src/grounded_mortgage_assistant/rag/answer.py">relevance gate</a>, <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/src/grounded_mortgage_assistant/rag/public_evidence.py">extract and citation validation</a>. The <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/architecture.md">architecture document</a> maps how these parts connect.</p>
+<div></div>
+<h2 id="3-workflow-context-and-customer-control">3. Workflow, context and customer control</h2>
+<p>The <a href="architecture/detailed.html">architecture visual</a> separates the browser, the API, the model, private session state, and evidence and tools. An interactive version is live at <code>https://kapilashrami.github.io/grounded-mortgage-assistant/architecture/detailed.html</code>. FastAPI and Pydantic define typed contracts, and LangGraph expresses the finite path from interpretation to action. LangChain's OpenAI-compatible adapter calls Qwen3.5-9B-MLX-4bit-938d891 through local oMLX on port 8011, or OpenAI gpt-4.1 when <code>LLM_PROVIDER=openai</code>. The provider is fixed at startup with no fallback, and both providers pass the same schema, model-identity and budget checks. In hosted mode, only the safe projection (masked amounts and opaque candidate handles) and public evidence text leave the machine, and only after the PII check. The backend runs on port 8099 and the frontend on port 8001.</p>
+<p>The frameworks fit what the workflow needs: bounded actions, explicit state transitions and failures that can be inspected. Public questions can take the direct scoped retrieval path, while personal mortgage turns go through the finite graph. The model proposes interpretations or evidence IDs, and Python validates them before it runs the calculation or draft operation. Adopting these frameworks has not by itself shown better answer quality.</p>
+<p>Current facts live in session RAM with revisions, status and exact source proofs. Amounts and the original proof spans stay on the private server side. The interpreter receives approved symbols, opaque candidate handles and a safe state projection, and it chooses the subject, conditionality, requested action and fact or scope candidate IDs. A model-selected ID must still pass ownership, membership and source validation before memory changes.</p>
+<p>The Qwen tokenizer counts the outgoing context, tool schemas included, against an 8,192-token input budget with 1,800 output tokens reserved. For OpenAI the count is an estimate, and the usage the API returns is recorded. Optional complete exchanges can be pruned, and authoritative facts are kept apart from conversation history. Nothing is learned across sessions, and there is no durable customer database. Request identity, replay checks, reset and expiry protect the session lifecycle.</p>
+<p>Financial tools use <code>Decimal</code> and only current proven inputs. For Refinance, LTV is the existing loan divided by the property value. New derives the loan from price minus down payment, and Expand adds the requested borrowing to the existing loan. Each result keeps its inputs, formula, units and rounding. The calculations do not establish individual eligibility.</p>
+<p>A draft is a snapshot kept apart from current facts, and it is only created on an explicit request. On the demonstrated local Refinance path, Start application checks the current session, the draft lifetime and the form snapshot, then fills the supported mortgage fields. A bug that overwrote form edits made after the card appeared was reproduced and fixed, and a browser recheck kept the customer's changed property value. The form stays editable and final submission stays disabled. Only the Refinance draft is supported, and amounts and intent are typed in chat, with no guided question buttons.</p>
+<p>A separate loopback service runs Guardrails DetectPII with local Presidio. It has an isolated dependency environment because of conflicts with the backend SDK. Detection errors stop processing. Recognized financial source spans are replaced only in a throwaway copy of the detector input, so legitimate mortgage amounts are not mistaken for identifiers. Question clauses are split at commas, so in <code>My existing mortgage is 2000000 and property is worth 2500000, what is my loan to value?</code> the amounts are recognized and masked before detection, and the question is not rejected as personal data. This adds one check and does not give full PII coverage.</p>
+<p>A <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#failures-and-pivots">UI check</a> rejected six synthetic PII cases with zero model tokens and failed closed while the detector was paused. It also showed that pressing Start over during a pending answer brought back none of the old facts.</p>
+<div></div>
+<h2 id="4-comparisons-and-evaluation-evidence">4. Comparisons and evaluation evidence</h2>
+<p>The project compared retrieval approaches before choosing the current design. The results measure different boundaries and should be read separately.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Study</th>
+<th>Baseline</th>
+<th>Alternative</th>
+<th>What it supports</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#earlier-retrieval-study">Earlier chunking and embedding study</a>: correct evidence in the top 5, 28 held-out questions</td>
+<td>Sentence chunks, E5-small, Flat dense: 25/28</td>
+<td>Whole Q&amp;A, BGE-M3, HNSW32 dense: 26/28</td>
+<td>A one-case retrieval gain; paired uncertainty included zero</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#reranker-comparison">Fixed-candidate reranker comparison</a></td>
+<td>Local BGE: 129/149 complete supported cases; 193/217 facts</td>
+<td>Cohere: 131/149 cases; 195/217 facts</td>
+<td>Small net support gain with four case gains and two losses</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#retrieval-parity">Framework integration parity</a></td>
+<td>Saved frozen retrieval</td>
+<td>Rebuilt retrieval: 159/159 exact matches</td>
+<td>Candidate and final evidence preserved for fixed queries</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#relevance-gate">Coverage decision</a></td>
+<td>Lexical product projector</td>
+<td>Reranker gate at 0.23: 142/146 supported kept, 7/9 unsupported rejected</td>
+<td>Retrieval decides coverage without a model call</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/results/browser-suites.json">Model provider</a>, same <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#browser-suites">browser suites</a></td>
+<td>Local Qwen: journey 16/16, questions 19/20 (1 run)</td>
+<td>OpenAI gpt-4.1: journey 16/16, questions 19/20 in each of 3 runs</td>
+<td>Equal on these suites; OpenAI exposed two defects that Qwen had hidden, fixed before these runs</td>
+</tr>
+<tr>
+<td><a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#model-comparison">OpenAI model choice</a>, 3 runs each</td>
+<td>gpt-4.1: questions 55/60, $0.0032 per turn</td>
+<td>gpt-5.4-mini (effort none): 57/60, $0.0014; gpt-4.1-mini: 54/60, $0.0006</td>
+<td>All 48/48 on the journey at about 1.2 s per turn; differences are within noise, so the demo stays on gpt-4.1</td>
+</tr>
+</tbody>
+</table></div>
+<p>The earlier chunking and embedding study used an earlier corpus and non-exhaustive labels written by an agent. It supports the move to dense BGE retrieval and gives no answer-quality score. The <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#reranker-comparison">reranker comparison</a> kept 159 candidate sets, packing and equivalence rules fixed, and 149 of those sets had supported-case labels. Local BGE remains the runtime choice because Cohere's net gain was small and came with regressions.</p>
+<p>The <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/results/retrieval-parity.json">159-query parity receipt</a> separates implementation changes from retrieval changes. The browser suites are functional examples the system was developed against, so they are not unseen acceptance results.</p>
+<p>Final quality should be measured over complete journeys, counting every required answer, clarification, calculation and browser action, with errors and timeouts counted as failures. Source support, applicable citations, numeric correctness and forbidden actions should be reported separately. The original design targets were 80% journey success and supported-answer coverage, 85% evidence recall@5, and all critical cases passing. These remain targets, and this document does not claim the current local runtime meets them.</p>
+<p>The console reports recorded usage and timing, marks estimates and unknowns, and shows $0 for local calls and a list-price estimate for OpenAI calls. Local hardware cost is not measured.</p>
+<p>LLM-as-a-judge was tried on an earlier hosted configuration study. It covered 549 generated answers across four retrieval arms (159 questions each), graded by a <code>gpt-6-sol</code> judge whose calibration agreed on 28 of 30 acceptance labels. Grading stopped at the project spend limit with 305 valid reviews, 242 quota rejections and 2 inconsistent grades. Valid coverage ranged from 23 to 157 reviews per arm, so no winner is claimed. On the 10 cases graded for every arm, 7 or 8 of 10 answers were fully accepted in each arm. A follow-up will grade the remaining answers with the same judge and report complete results (<a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#llm-as-a-judge">evaluation report</a>).</p>
+<div></div>
+<h2 id="5-failure-analysis-and-limits">5. Failure analysis and limits</h2>
+<p>In early tool-selection experiments, Qwen could skip retrieval, so the service took over the required retrieval step. Freeform local synthesis also failed the source-support requirement. Selecting current evidence IDs and rendering reviewed extracts made the answer boundary easier to inspect, at the cost of less fluent and sometimes overlapping answers.</p>
+<p>The earlier state design mixed conversation facts with application drafts. An amount correction could start draft preparation, and a following LTV question could miss the calculation. A stopped hosted diagnostic using the returned <code>gpt-5.4-mini-2026-03-17</code> identity reproduced the correction and intent failures, which showed that changing the provider did not repair the state contract. The redesign separated current facts from draft snapshots and made draft preparation explicit (<a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#reranker-comparison">saved diagnostic evidence</a>).</p>
+<p>A frozen <code>c9ca601</code> development build completed the positive memory steps in three sessions but failed the negated-amount control in each one, and strict validation rejected its proposals. That historical gate scored 0/3, and the later controls were never reached. It led to narrower proposal validation and is kept as regression evidence. It has not been rerun on the current build, so this document claims neither failure nor success on the full gate for today's runtime (<a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/results/qwen-gate.json">historical gate</a>).</p>
+<p>Browser work exposed failures outside inference. Start over first failed because the running frontend proxy was stale, and reloading the task-owned server restored the existing allowed reset route. Direct draft handoff first overwrote a newer form edit, and snapshot validation was repaired and checked in the browser. These failures are why the project tests the visible customer path as well as module correctness (<a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/evaluation.md#failures-and-pivots">reset, handoff and stale-edit evidence</a>).</p>
+<p>Final testing and a recording rehearsal found eight more defects. Each was reproduced in the browser and fixed with a test:</p>
+<ul>
+<li><code>without extra borrowing</code> lost its no-increase proof.</li>
+<li><code>my friend mortgage</code> raised an error instead of marking third-party scope.</li>
+<li>Qwen at temperature 0 sometimes labelled the explicit LTV question an acknowledgement. The server now promotes it and records a Routing event.</li>
+<li>The reversed LTV phrasing was rejected as personal information.</li>
+<li>The question asking what the company is never reached retrieval.</li>
+<li>58 of the 1,476 records had no citable source URL, so an answer that selected one failed closed. This only surfaced when OpenAI selected all five candidates.</li>
+<li>OpenAI labelled the stated refinance intent as a calculation after an LTV in 2 of 6 runs. A turn without amounts or calculation wording can no longer start one.</li>
+<li>Stating that intent also marked the unchanged LTV as stale. A calculation now goes stale only when an amount changes.</li>
+</ul>
+<p>A 20-question browser suite now covers these cases. Two routing limits remain. Any digit keeps a question off the public path, so <code>Who won the football World Cup in 2022?</code> gets a rephrase request instead of the not-found message. A bare <code>What is my loan to value?</code> also goes to retrieval when it should ask for the two amounts.</p>
+<p>The engineering console shows projections, retrieval IDs, model identity, usage, cost and stages, including a safe clarification reason. It does not keep every candidate, reranker score or model payload, so exact replay is not possible. Debug content stays in RAM and is purged with the session.</p>
+<p>This document describes a working local demonstration and the limits of what was measured. General model reliability, final unseen acceptance, mobile visual validation and business impact are not established. The system has no access to customer accounts, no live database connection and no ability to execute financial transactions. The next quality work is a frozen whole-journey evaluation that covers the current routing limits and the historical negation regressions, scored by humans against the sources before an automated judge is relied on.</p>
+  </article>
+  <footer>Source: <a href="https://github.com/kapilashrami/grounded-mortgage-assistant">github.com/kapilashrami/grounded-mortgage-assistant</a></footer>
+</main>
+</body>
+</html>

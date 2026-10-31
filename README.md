@@ -42,7 +42,7 @@ The tests need no corpus and no model. Running the backend needs both, plus the 
 ## Documentation
 
 - [Architecture](docs/architecture.md): how a message moves through the system, with the source map.
-- [Technical documentation](docs/technical-documentation.md): problem, retrieval, workflow, evaluation and limits.
+- [Technical documentation](https://kapilashrami.github.io/grounded-mortgage-assistant/technical-documentation.html): problem, retrieval, workflow, evaluation and limits, as a reading page ([Markdown version](docs/technical-documentation.md)).
 - [Evaluation](docs/evaluation.md): every study with its numbers. Per-case outcomes are in [docs/results](docs/results).
 - [Setup](docs/setup.md): settings, running the backend and the corpus.
 - [Design one-pager](docs/capstone-one-ish-pager.pdf): the original design, before the build.
