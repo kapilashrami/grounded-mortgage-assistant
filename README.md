@@ -6,7 +6,7 @@ A mortgage chat assistant that answers from reviewed, cited sources, calculates 
 
 *The assistant in the sidebar of the company's mortgage page. The website is proprietary and not part of this repository; this repository holds the backend, the engineering console and the documentation.*
 
-Demo video (3:32): [youtu.be/_Z884yL753A](https://youtu.be/_Z884yL753A). Interactive architecture: [overview](https://kapilashrami.github.io/grounded-mortgage-assistant/architecture/overview.html) and [detailed view](https://kapilashrami.github.io/grounded-mortgage-assistant/architecture/detailed.html).
+Demo video (3:32): [youtu.be/u2Up18d1_OE](https://youtu.be/u2Up18d1_OE). Interactive architecture: [overview](https://kapilashrami.github.io/grounded-mortgage-assistant/architecture/overview.html) and [detailed view](https://kapilashrami.github.io/grounded-mortgage-assistant/architecture/detailed.html).
 
 ## What it does
 
