@@ -1,7 +1,7 @@
 # Data
 
-The runtime corpus is not part of this repository. The assistant was built on 1,476 reviewed English records prepared from Lendo's public website, with search indexes and citation PDFs. That content is Lendo-owned and cannot be published.
+The runtime corpus is not in this repository. The assistant was built on 1,476 reviewed English records taken from the company's public website, plus search indexes and citation PDFs. The company owns that content, so it stays private.
 
-- `sample/records.jsonl` holds 20 generic English mortgage records written for this repository, with `example.com` sources (see [sample/README.md](sample/README.md)). The test suite uses them through a fixture.
-- `DATA_DIR` points the backend at a corpus folder (default `data/corpus`, ignored by Git). Startup checks the bundle's SHA-256 manifests and stops if anything is missing or changed.
-- A loader that turns the sample into a bundle the backend accepts is planned; the README lists the manual steps until then.
+- `sample/records.jsonl` has 20 generic mortgage records written for this repository, with `example.com` sources ([sample/README.md](sample/README.md)). The tests use them through a fixture.
+- `DATA_DIR` points the backend at a corpus folder. The default is `data/corpus`, which Git ignores. At startup the backend checks the bundle's SHA-256 manifests and stops if a file is missing or has changed.
+- A loader that turns the sample into a bundle is planned. [docs/setup.md](../docs/setup.md) lists the manual steps until then.

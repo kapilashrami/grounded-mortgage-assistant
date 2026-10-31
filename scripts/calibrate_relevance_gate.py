@@ -15,7 +15,7 @@ from statistics import median
 from grounded_mortgage_assistant.rag.retrieval import FrozenRetriever
 
 ROOT = Path(__file__).resolve().parents[1]
-# The audited cases and receipts are private (Lendo-owned); set EVIDENCE_DIR to rerun.
+# The audited cases and receipts are company-owned and private; set EVIDENCE_DIR to rerun.
 EVIDENCE = Path(os.environ.get("EVIDENCE_DIR", ROOT / "evidence")).expanduser()
 CASES = EVIDENCE / "evaluation/control/cases.audited.json"
 OUTPUT = EVIDENCE / "evaluation/2026-10-31-relevance-gate/calibration.json"

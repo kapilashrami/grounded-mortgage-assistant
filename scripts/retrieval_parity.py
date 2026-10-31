@@ -10,7 +10,7 @@ from pathlib import Path
 from grounded_mortgage_assistant.rag.retrieval import FrozenRetriever
 
 ROOT = Path(__file__).resolve().parents[1]
-# The audited cases and receipts are private (Lendo-owned); set EVIDENCE_DIR to rerun.
+# The audited cases and receipts are company-owned and private; set EVIDENCE_DIR to rerun.
 EVIDENCE = Path(os.environ.get("EVIDENCE_DIR", ROOT / "evidence")).expanduser()
 CONTROL = EVIDENCE / "evaluation/control/retrieval/english-balanced-10x2-rerank.json"
 OUTPUT = EVIDENCE / "evaluation/integration-parity.json"
