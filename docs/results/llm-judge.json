@@ -3,10 +3,9 @@
   "date": "2026-10-29",
   "status": "incomplete",
   "source": [
-    "evidence/evaluation/control/final-offline-evaluation-report-v1.md",
-    "Legacy/evaluation/rag-retrieval-eval-lab/comparisons/2026-10-29-lendo-english-full/final-offline-integrity-summary-v1.json"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "A calibrated LLM judge graded generated answers for 159 questions per retrieval configuration (arm) on seven dimensions (completeness, grounding, citation locality, calibration, language, source qualification, dialogue context) plus an overall fully-accepted label.",
   "what_it_does_not_show": "A winner. Grading stopped at the project spend limit, nonrandomly, so valid coverage per arm ranges from 23 to 157 and acceptance rates on those unequal denominators are not compared. The 10-case common slice contains only answerable, exposed development or diagnostic cases. Judgments are provisional model grades, not human gold. This study used an earlier hosted configuration, not the current runtime.",
   "judge_model": "gpt-6-sol",

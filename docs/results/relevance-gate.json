@@ -2,9 +2,9 @@
   "study": "Reranker relevance gate calibration",
   "date": "2026-10-31",
   "source": [
-    "evidence/evaluation/2026-10-31-relevance-gate/calibration.json"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "For each of 159 fixed evaluation cases, the highest local reranker (bge-reranker-v2-m3) score among retrieved candidates, and how many supported cases are kept and unsupported cases rejected at each threshold from 0.01 to 0.95. The gate decides, without any model call, whether the corpus covers a public question.",
   "what_it_does_not_show": "Answer quality, citation correctness or behaviour on unseen questions. Only 9 unsupported cases exist, so the rejection rate is a small-sample estimate. The cases are exposed development and diagnostic cases, not a held-out set. Partial and source-specific-unavailable cases (4) are listed but not counted in either total.",
   "rule": "highest threshold keeping at least 97% of supported cases",

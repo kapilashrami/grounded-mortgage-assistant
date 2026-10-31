@@ -2,12 +2,9 @@
   "study": "OpenAI model comparison on the browser suites",
   "date": "2026-10-31",
   "source": [
-    "evidence/evaluation/2026-10-31-model-comparison/README.md",
-    "evidence/evaluation/2026-10-31-model-comparison/summary.json",
-    "evidence/evaluation/2026-10-31-model-comparison/*-journey-*.json",
-    "evidence/evaluation/2026-10-31-model-comparison/*-questions-*.json"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder. Latency, cost and evidence counts were derived from saved console traces by the analysis script that produced summary.json.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published. Latency, cost and evidence counts were derived from saved console traces by the analysis script that produced summary.json.",
   "what_it_measures": "For three OpenAI models on the same backend, frontend and suites (16-check journey and 20-question suite, 3 runs each, real UI): pass counts, failing question IDs, median and p90 turn latency, mean list-price cost per model turn, and mean number of evidence records selected per answered product question.",
   "what_it_does_not_show": "A statistically meaningful ranking: with 9 runs per model, a 1-versus-0 miss difference is noise. Exposed functional suites, not unseen acceptance. Evidence-selection width is not correctness, because there is no per-question needed-evidence label. Costs are estimates at 31 October 2026 list prices, not invoices.",
   "decision": "The demo stays on gpt-4.1; differences are within noise.",

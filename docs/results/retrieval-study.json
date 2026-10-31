@@ -2,12 +2,9 @@
   "study": "Earlier chunking, embedding and index study (capstone milestone M2)",
   "date": "2026-10-14 to 2026-10-15 (final decision confirmed 15 October 2026)",
   "source": [
-    "Legacy/lendo-capstone/docs/m2-comparison.md",
-    "Legacy/evaluation/rag-retrieval-eval-lab/comparisons/2026-10-14-lendo-m2/results/3328a550bec6a2ff-heldout.json",
-    "Legacy/evaluation/rag-retrieval-eval-lab/comparisons/2026-10-14-lendo-m2/results/38d1e5cde8be36e8-heldout.json",
-    "lendo-capstone-framework/docs/submission/technical-documentation.md (section 4)"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "Whether the labelled source evidence for each question appears among the top 5 retrieved passages (complete evidence@5), comparing a sentence-chunk baseline with the selected whole-Q&A dense configuration on development, held-out and historical diagnostic splits. 195 development configurations reached a terminal result (185 valid, 2 protocol failures, 8 ineligible eight-bit PQ configurations), 69 distinct pipelines.",
   "what_it_does_not_show": "Answer quality or semantic correctness. Labels were authored and source-checked by an agent, are source-specific and non-exhaustive, so a valid answer from another source can score as a miss. It used an earlier corpus snapshot (1,477 records) than the current runtime (1,476). The held-out gain is one case and its paired interval includes zero. The selected configuration used no reranking; the current runtime adds two-view retrieval and a local reranker, which this study did not evaluate.",
   "baseline": {

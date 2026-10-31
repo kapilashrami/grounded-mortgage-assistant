@@ -2,12 +2,9 @@
   "study": "Browser suites through the real frontend: 16-check journey and 20-question suite",
   "date": "2026-10-31",
   "source": [
-    "evidence/browser/2026-10-31-cleanup-e2e/README.md",
-    "evidence/browser/2026-10-31-cleanup-e2e/results-run-*.json",
-    "evidence/browser/2026-10-31-openai-provider/README.md",
-    "evidence/browser/2026-10-31-openai-provider/*.json"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "Whether scripted Playwright runs through the real chat UI and engineering console pass fixed functional checks: a 16-check demo journey (knowledge answer with citation, LTV card, refinance intent, draft, form handoff, privacy rejection, console, reset) and a 20-question suite across knowledge, LTV, journey, unsupported and privacy categories.",
   "what_it_does_not_show": "Unseen acceptance or general model quality. These are exposed functional examples written during development, with few runs per configuration. Question text, answers and screenshots are not published; checks and questions appear by ID only.",
   "journey_check_ids": {

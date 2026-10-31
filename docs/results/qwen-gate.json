@@ -2,13 +2,9 @@
   "study": "Historical local Qwen interpretation feasibility gate",
   "date": "2026-10-30",
   "source": [
-    "evidence/evaluation/2026-10-30-memory/qwen-repair/feasibility-role-contract/DECLARATION.md",
-    "evidence/evaluation/2026-10-30-memory/qwen-repair/feasibility-role-contract/RESULT.md",
-    "evidence/evaluation/2026-10-30-memory/qwen-repair/feasibility-role-contract/run-1/gate.json",
-    "evidence/evaluation/2026-10-30-memory/qwen-repair/feasibility-role-contract/run-2/gate.json",
-    "evidence/evaluation/2026-10-30-memory/qwen-repair/feasibility-role-contract/run-3/gate.json"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "Three predeclared, independent sessions of a scripted multi-turn memory journey against a frozen development build with local Qwen3.5-9B. Each run stops at its first failure; no within-turn retry or fallback; at most 36 native requests.",
   "what_it_does_not_show": "The current runtime: the gate has not been rerun on the current build, so neither failure nor success is asserted for it. Controls after the stop point (third-party and hypothetical) were never reached and are not claimed as tested. No accuracy or unseen acceptance result.",
   "model": "Qwen3.5-9B-MLX-4bit (local)",

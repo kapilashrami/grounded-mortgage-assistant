@@ -2,11 +2,9 @@
   "study": "Fixed-query retrieval parity (frozen saved retrieval versus rebuilt framework retrieval)",
   "date": "2026-10-29 (integration parity) and 2026-10-30 (fixed-query parity receipt)",
   "source": [
-    "evidence/evaluation/integration-parity.json",
-    "evidence/evaluation/retrieval-parity-receipt.txt",
-    "evidence/evaluation/2026-10-30-memory/functional/fixed-query-parity-receipt.json"
+    "private project evidence (not published)"
   ],
-  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "source_note": "Raw evidence is private (company-owned corpus and logs) and is not published.",
   "what_it_measures": "Whether the rebuilt framework retrieval reproduces the saved frozen retrieval exactly for 159 fixed queries: final evidence IDs, packed generation texts, and the top-10 candidate IDs from each of the two dense views (clean and base).",
   "what_it_does_not_show": "Retrieval quality or answer quality; it isolates implementation changes from retrieval changes. Both receipts predate the retriever returning scores, so a re-run is still open.",
   "models": {
