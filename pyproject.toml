@@ -1,0 +1,14 @@
+[project]
+name = "grounded-mortgage-assistant"
+version = "0.1.0"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "fastapi==0.143.0", "uvicorn==0.54.0", "pydantic==2.14.0",
+  "langgraph==1.2.18", "langchain-openai==1.7.3", "faiss-cpu==1.15.1",
+  "sentence-transformers==6.1.0", "torch==2.14.1", "transformers==5.19.0",
+  "numpy==2.5.4", "openai==3.28.0", "httpx==0.28.1"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
