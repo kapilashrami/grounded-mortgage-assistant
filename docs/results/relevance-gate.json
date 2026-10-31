@@ -1,0 +1,1656 @@
+{
+  "study": "Reranker relevance gate calibration",
+  "date": "2026-10-31",
+  "source": [
+    "evidence/evaluation/2026-10-31-relevance-gate/calibration.json"
+  ],
+  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "what_it_measures": "For each of 159 fixed evaluation cases, the highest local reranker (bge-reranker-v2-m3) score among retrieved candidates, and how many supported cases are kept and unsupported cases rejected at each threshold from 0.01 to 0.95. The gate decides, without any model call, whether the corpus covers a public question.",
+  "what_it_does_not_show": "Answer quality, citation correctness or behaviour on unseen questions. Only 9 unsupported cases exist, so the rejection rate is a small-sample estimate. The cases are exposed development and diagnostic cases, not a held-out set. Partial and source-specific-unavailable cases (4) are listed but not counted in either total.",
+  "rule": "highest threshold keeping at least 97% of supported cases",
+  "threshold": 0.23,
+  "supported_total": 146,
+  "unsupported_total": 9,
+  "supported_kept": 142,
+  "unsupported_rejected": 7,
+  "case_status_counts": {
+    "supported": 146,
+    "unsupported": 9,
+    "partial": 3,
+    "source_specific_unavailable": 1
+  },
+  "errors_at_threshold": {
+    "supported_rejected": [
+      "DEV-consumer-loan-02",
+      "DEV-glossary-02",
+      "TEST-business-loan-02",
+      "TEST-mortgage-01"
+    ],
+    "unsupported_kept": [
+      "UNSUPPORTED-05",
+      "UNSUPPORTED-06"
+    ]
+  },
+  "score_distribution_by_status": {
+    "partial": {
+      "min": 0.7714,
+      "p5": 0.7714,
+      "p10": 0.7714,
+      "median": 0.9229,
+      "max": 0.9961
+    },
+    "source_specific_unavailable": {
+      "min": 0.9329,
+      "p5": 0.9329,
+      "p10": 0.9329,
+      "median": 0.9329,
+      "max": 0.9329
+    },
+    "supported": {
+      "min": 0.0285,
+      "p5": 0.3407,
+      "p10": 0.551,
+      "median": 0.9357,
+      "max": 0.9997
+    },
+    "unsupported": {
+      "min": 0.0,
+      "p5": 0.0,
+      "p10": 0.0,
+      "median": 0.0126,
+      "max": 0.7204
+    }
+  },
+  "sweep": [
+    {
+      "threshold": 0.01,
+      "supported_kept": 146,
+      "unsupported_rejected": 4
+    },
+    {
+      "threshold": 0.02,
+      "supported_kept": 146,
+      "unsupported_rejected": 5
+    },
+    {
+      "threshold": 0.03,
+      "supported_kept": 145,
+      "unsupported_rejected": 6
+    },
+    {
+      "threshold": 0.04,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.05,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.06,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.07,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.08,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.09,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.1,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.11,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.12,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.13,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.14,
+      "supported_kept": 144,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.15,
+      "supported_kept": 143,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.16,
+      "supported_kept": 143,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.17,
+      "supported_kept": 143,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.18,
+      "supported_kept": 143,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.19,
+      "supported_kept": 143,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.2,
+      "supported_kept": 142,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.21,
+      "supported_kept": 142,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.22,
+      "supported_kept": 142,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.23,
+      "supported_kept": 142,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.24,
+      "supported_kept": 141,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.25,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.26,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.27,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.28,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.29,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.3,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.31,
+      "supported_kept": 139,
+      "unsupported_rejected": 7
+    },
+    {
+      "threshold": 0.32,
+      "supported_kept": 139,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.33,
+      "supported_kept": 139,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.34,
+      "supported_kept": 139,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.35,
+      "supported_kept": 138,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.36,
+      "supported_kept": 138,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.37,
+      "supported_kept": 138,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.38,
+      "supported_kept": 138,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.39,
+      "supported_kept": 138,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.4,
+      "supported_kept": 138,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.41,
+      "supported_kept": 137,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.42,
+      "supported_kept": 136,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.43,
+      "supported_kept": 136,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.44,
+      "supported_kept": 136,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.45,
+      "supported_kept": 136,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.46,
+      "supported_kept": 136,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.47,
+      "supported_kept": 136,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.48,
+      "supported_kept": 135,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.49,
+      "supported_kept": 134,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.5,
+      "supported_kept": 134,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.51,
+      "supported_kept": 134,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.52,
+      "supported_kept": 133,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.53,
+      "supported_kept": 133,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.54,
+      "supported_kept": 132,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.55,
+      "supported_kept": 132,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.56,
+      "supported_kept": 131,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.57,
+      "supported_kept": 131,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.58,
+      "supported_kept": 131,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.59,
+      "supported_kept": 129,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.6,
+      "supported_kept": 127,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.61,
+      "supported_kept": 127,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.62,
+      "supported_kept": 127,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.63,
+      "supported_kept": 126,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.64,
+      "supported_kept": 125,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.65,
+      "supported_kept": 123,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.66,
+      "supported_kept": 122,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.67,
+      "supported_kept": 122,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.68,
+      "supported_kept": 122,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.69,
+      "supported_kept": 122,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.7,
+      "supported_kept": 122,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.71,
+      "supported_kept": 119,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.72,
+      "supported_kept": 118,
+      "unsupported_rejected": 8
+    },
+    {
+      "threshold": 0.73,
+      "supported_kept": 118,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.74,
+      "supported_kept": 116,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.75,
+      "supported_kept": 115,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.76,
+      "supported_kept": 113,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.77,
+      "supported_kept": 112,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.78,
+      "supported_kept": 110,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.79,
+      "supported_kept": 109,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.8,
+      "supported_kept": 109,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.81,
+      "supported_kept": 109,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.82,
+      "supported_kept": 109,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.83,
+      "supported_kept": 109,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.84,
+      "supported_kept": 107,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.85,
+      "supported_kept": 105,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.86,
+      "supported_kept": 100,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.87,
+      "supported_kept": 97,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.88,
+      "supported_kept": 90,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.89,
+      "supported_kept": 88,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.9,
+      "supported_kept": 83,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.91,
+      "supported_kept": 80,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.92,
+      "supported_kept": 78,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.93,
+      "supported_kept": 75,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.94,
+      "supported_kept": 72,
+      "unsupported_rejected": 9
+    },
+    {
+      "threshold": 0.95,
+      "supported_kept": 67,
+      "unsupported_rejected": 9
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "DEV-consumer-loan-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8382,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-consumer-loan-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.0314,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": false
+    },
+    {
+      "case_id": "DEV-consumer-loan-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8909,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-consumer-loan-04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9951,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-consumer-loan-05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8703,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-consumer-loan-06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8619,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-business-loan-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9017,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-business-loan-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.924,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-business-loan-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9575,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-business-loan-04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9979,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-business-loan-05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9887,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-business-loan-06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.6429,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-mortgage-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9789,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-mortgage-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9921,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-mortgage-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7783,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-mortgage-04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9966,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-mortgage-05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9991,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-mortgage-06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.995,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-insurance-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.2491,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-insurance-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.994,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-insurance-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.2404,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-insurance-04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7326,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-insurance-05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9668,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-insurance-06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8437,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-kreddy-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9682,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-kreddy-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9721,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-kreddy-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9484,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-kreddy-04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9872,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-kreddy-05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7569,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-kreddy-06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9591,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-company-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9969,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-company-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8641,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-partners-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7652,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-partners-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.864,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-glossary-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.6245,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-glossary-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.1989,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": false
+    },
+    {
+      "case_id": "DEV-guides-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9744,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-guides-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8592,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-privacy-policies-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9222,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-privacy-policies-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9868,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-collection-overview-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9896,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-collection-overview-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8935,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-support-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7049,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-support-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8541,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-private-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9951,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-private-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9948,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-private-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9582,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-business-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9977,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-business-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.955,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-business-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9923,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-mortgage-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8796,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-mortgage-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.947,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "DEV-blog-mortgage-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9977,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-consumer-loan-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.551,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-consumer-loan-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7508,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-consumer-loan-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.6581,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-business-loan-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9845,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-business-loan-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.1425,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": false
+    },
+    {
+      "case_id": "TEST-business-loan-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.918,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-mortgage-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.0285,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": false
+    },
+    {
+      "case_id": "TEST-mortgage-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9931,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-mortgage-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9854,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-insurance-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.6347,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-insurance-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9681,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-insurance-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.992,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-kreddy-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9418,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-kreddy-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9971,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-kreddy-03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.4774,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-company-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.992,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-partners-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9554,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-glossary-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.5963,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-guides-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8725,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-privacy-policies-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9324,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-collection-overview-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7772,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-support-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.845,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-blog-private-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9963,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-blog-private-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.6481,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-blog-business-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8971,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-blog-business-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9631,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-blog-mortgage-01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.79,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "TEST-blog-mortgage-02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.98,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-001",
+      "expected_status": "supported",
+      "top_rerank_score": 0.999,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-002",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9981,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-003",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9991,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-004",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7026,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-005",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9994,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-006",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9972,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-007",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9862,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-008",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9997,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-009",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9993,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-010",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9824,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-WITHDRAWAL-001",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8717,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "gap-DEMO-MORTGAGE-001",
+      "expected_status": "supported",
+      "top_rerank_score": 0.998,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-01",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0306,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-02",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0254,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-03",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0011,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-04",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0029,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-05",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.3118,
+      "gate_outcome_at_0_23": "kept",
+      "correct": false
+    },
+    {
+      "case_id": "UNSUPPORTED-06",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.7204,
+      "gate_outcome_at_0_23": "kept",
+      "correct": false
+    },
+    {
+      "case_id": "UNSUPPORTED-07",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-08",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0053,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "UNSUPPORTED-09",
+      "expected_status": "unsupported",
+      "top_rerank_score": 0.0126,
+      "gate_outcome_at_0_23": "rejected",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.939,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C02",
+      "expected_status": "partial",
+      "top_rerank_score": 0.9229,
+      "gate_outcome_at_0_23": "kept",
+      "correct": null
+    },
+    {
+      "case_id": "SF-C03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9098,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C04",
+      "expected_status": "source_specific_unavailable",
+      "top_rerank_score": 0.9329,
+      "gate_outcome_at_0_23": "kept",
+      "correct": null
+    },
+    {
+      "case_id": "SF-C05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8942,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9739,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C07",
+      "expected_status": "supported",
+      "top_rerank_score": 0.5103,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C08",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9118,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C09",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8583,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C10",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8784,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-C11",
+      "expected_status": "supported",
+      "top_rerank_score": 0.5904,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9784,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7463,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9946,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9713,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9965,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9941,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B07",
+      "expected_status": "supported",
+      "top_rerank_score": 0.5824,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B08",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7087,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B09",
+      "expected_status": "supported",
+      "top_rerank_score": 0.4189,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-B10",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9752,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9852,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9739,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M03",
+      "expected_status": "partial",
+      "top_rerank_score": 0.9961,
+      "gate_outcome_at_0_23": "kept",
+      "correct": null
+    },
+    {
+      "case_id": "SF-M04",
+      "expected_status": "partial",
+      "top_rerank_score": 0.7714,
+      "gate_outcome_at_0_23": "kept",
+      "correct": null
+    },
+    {
+      "case_id": "SF-M05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9008,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8879,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M07",
+      "expected_status": "supported",
+      "top_rerank_score": 0.4803,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M08",
+      "expected_status": "supported",
+      "top_rerank_score": 0.5896,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-M09",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9306,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-T01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.2321,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-T02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9666,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-T03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9415,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-T04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9607,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-T05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8769,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-L01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9613,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-L02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.3407,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-A01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7188,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-A02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.84,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-A03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9237,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-A04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9882,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-O01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9952,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-O02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8819,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-O03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8952,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-O04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.98,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-O05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.5336,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-O06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9994,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-G01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9427,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-G02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8513,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-G03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.7393,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-G04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9951,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-D01",
+      "expected_status": "supported",
+      "top_rerank_score": 0.999,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-D02",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9982,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-D03",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8744,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-D04",
+      "expected_status": "supported",
+      "top_rerank_score": 0.8551,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-D05",
+      "expected_status": "supported",
+      "top_rerank_score": 0.9997,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    },
+    {
+      "case_id": "SF-D06",
+      "expected_status": "supported",
+      "top_rerank_score": 0.4074,
+      "gate_outcome_at_0_23": "kept",
+      "correct": true
+    }
+  ]
+}

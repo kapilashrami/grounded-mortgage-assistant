@@ -1,0 +1,225 @@
+{
+  "study": "LLM-as-a-judge evaluation of generated answers across four retrieval configurations",
+  "date": "2026-10-29",
+  "status": "incomplete",
+  "source": [
+    "evidence/evaluation/control/final-offline-evaluation-report-v1.md",
+    "Legacy/evaluation/rag-retrieval-eval-lab/comparisons/2026-10-29-lendo-english-full/final-offline-integrity-summary-v1.json"
+  ],
+  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "what_it_measures": "A calibrated LLM judge graded generated answers for 159 questions per retrieval configuration (arm) on seven dimensions (completeness, grounding, citation locality, calibration, language, source qualification, dialogue context) plus an overall fully-accepted label.",
+  "what_it_does_not_show": "A winner. Grading stopped at the project spend limit, nonrandomly, so valid coverage per arm ranges from 23 to 157 and acceptance rates on those unequal denominators are not compared. The 10-case common slice contains only answerable, exposed development or diagnostic cases. Judgments are provisional model grades, not human gold. This study used an earlier hosted configuration, not the current runtime.",
+  "judge_model": "gpt-6-sol",
+  "generator_model_returned": "gpt-6-sol",
+  "arms": 4,
+  "questions_per_arm": 159,
+  "logical_evaluations": 636,
+  "generated_answers_unique": 549,
+  "duplicate_generations_avoided": 87,
+  "judge_requests": {
+    "total": 549,
+    "valid": 305,
+    "quota_rejected_http_429_spend_limit": 242,
+    "internal_consistency_failed": 2
+  },
+  "logical_evaluation_coverage": {
+    "valid_completed": 367,
+    "quota_rejected": 267,
+    "internal_consistency_failed": 2,
+    "total": 636,
+    "interpretation": "Shared reviews bind to several arms, so per-arm counts sum to 636 logical evaluations (367 valid, 267 quota-rejected, 2 inconsistent) while unique judge requests sum to 549."
+  },
+  "inconsistent_grades": [
+    {
+      "arm": "117ca79fe094e5ba",
+      "case_id": "UNSUPPORTED-03",
+      "outcome": "invalid (internal-consistency failure)"
+    },
+    {
+      "arm": "117ca79fe094e5ba",
+      "case_id": "SF-C04",
+      "outcome": "invalid (internal-consistency failure)"
+    }
+  ],
+  "per_arm_coverage": {
+    "english-balanced-10x2-rerank": {
+      "generated": 159,
+      "valid_judged": 71,
+      "quota_rejected": 88,
+      "inconsistent": 0,
+      "generator_response_status_counts": {
+        "ANSWERED": 142,
+        "UNSUPPORTED": 16,
+        "CLARIFY": 1
+      },
+      "common_slice_fully_accepted": "7/10"
+    },
+    "english-whole-qa-clean-rerank": {
+      "generated": 159,
+      "valid_judged": 116,
+      "quota_rejected": 43,
+      "inconsistent": 0,
+      "generator_response_status_counts": {
+        "ANSWERED": 140,
+        "CLARIFY": 1,
+        "UNSUPPORTED": 18
+      },
+      "common_slice_fully_accepted": "7/10"
+    },
+    "117ca79fe094e5ba": {
+      "generated": 159,
+      "valid_judged": 157,
+      "quota_rejected": 0,
+      "inconsistent": 2,
+      "generator_response_status_counts": {
+        "ANSWERED": 138,
+        "UNSUPPORTED": 21
+      },
+      "common_slice_fully_accepted": "8/10"
+    },
+    "swedish-clean-dense-english-query-control": {
+      "generated": 159,
+      "valid_judged": 23,
+      "quota_rejected": 136,
+      "inconsistent": 0,
+      "generator_response_status_counts": {
+        "ANSWERED": 131,
+        "CLARIFY": 1,
+        "UNSUPPORTED": 27
+      },
+      "common_slice_fully_accepted": "7/10"
+    }
+  },
+  "per_arm_valid_range": [
+    23,
+    157
+  ],
+  "common_slice": {
+    "n": 10,
+    "composition": {
+      "development": 7,
+      "additive_gap_development": 1,
+      "diagnostic": 2,
+      "answerable": 10
+    },
+    "fully_accepted_by_arm": {
+      "english-balanced-10x2-rerank": "7/10",
+      "english-whole-qa-clean-rerank": "7/10",
+      "117ca79fe094e5ba": "8/10",
+      "swedish-clean-dense-english-query-control": "7/10"
+    },
+    "cases": [
+      {
+        "case_id": "DEV-business-loan-02",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "not accepted",
+          "english-whole-qa-clean-rerank": "not accepted",
+          "117ca79fe094e5ba": "not accepted",
+          "swedish-clean-dense-english-query-control": "not accepted"
+        }
+      },
+      {
+        "case_id": "DEV-business-loan-06",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      },
+      {
+        "case_id": "DEV-kreddy-02",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      },
+      {
+        "case_id": "DEV-glossary-01",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      },
+      {
+        "case_id": "DEV-glossary-02",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      },
+      {
+        "case_id": "DEV-privacy-policies-01",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "not accepted",
+          "english-whole-qa-clean-rerank": "not accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      },
+      {
+        "case_id": "DEV-collection-overview-02",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "not accepted"
+        }
+      },
+      {
+        "case_id": "gap-DEMO-INCOME-008",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      },
+      {
+        "case_id": "SF-C01",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "not accepted",
+          "english-whole-qa-clean-rerank": "not accepted",
+          "117ca79fe094e5ba": "not accepted",
+          "swedish-clean-dense-english-query-control": "not accepted"
+        }
+      },
+      {
+        "case_id": "SF-C07",
+        "by_arm": {
+          "english-balanced-10x2-rerank": "accepted",
+          "english-whole-qa-clean-rerank": "accepted",
+          "117ca79fe094e5ba": "accepted",
+          "swedish-clean-dense-english-query-control": "accepted"
+        }
+      }
+    ]
+  },
+  "calibration": {
+    "real_prior_outputs": 30,
+    "synthetic_controls": 4,
+    "acceptance_label_agreement": "28/30",
+    "acceptance_label_agreement_rate": 0.9333,
+    "dimension_cell_agreement": "190/210",
+    "dimension_cell_agreement_rate": 0.9048,
+    "limits": "References are agent adjudications, not independent human gold; agreement cells were not independently revalidated."
+  },
+  "returned_token_usage": {
+    "generator_total_tokens": 1208963,
+    "judge_total_tokens": 1609599,
+    "calibration_total_tokens": 171471,
+    "note": "Quota-rejected requests returned no usage. Monetary billing was not accessed."
+  },
+  "arm_ids_note": "Arm 117ca79fe094e5ba is a configuration hash from the retrieval lab.",
+  "follow_up": {
+    "status": "planned",
+    "plan": "Grade the 244 missing judgments (242 quota rejections and 2 inconsistent grades) with the same judge model, prompt and schema, so all 636 evaluations share one judge, then report complete denominators and either a justified winner or a plain statement that none emerged.",
+    "why_same_judge": "Mixing judges would make the arms incomparable; a different judge would have to regrade all 549 answers after its own calibration run."
+  }
+}

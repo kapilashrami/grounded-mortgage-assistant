@@ -1,0 +1,687 @@
+{
+  "study": "Fixed-query retrieval parity (frozen saved retrieval versus rebuilt framework retrieval)",
+  "date": "2026-10-29 (integration parity) and 2026-10-30 (fixed-query parity receipt)",
+  "source": [
+    "evidence/evaluation/integration-parity.json",
+    "evidence/evaluation/retrieval-parity-receipt.txt",
+    "evidence/evaluation/2026-10-30-memory/functional/fixed-query-parity-receipt.json"
+  ],
+  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "what_it_measures": "Whether the rebuilt framework retrieval reproduces the saved frozen retrieval exactly for 159 fixed queries: final evidence IDs, packed generation texts, and the top-10 candidate IDs from each of the two dense views (clean and base).",
+  "what_it_does_not_show": "Retrieval quality or answer quality; it isolates implementation changes from retrieval changes. Both receipts predate the retriever returning scores, so a re-run is still open.",
+  "models": {
+    "embedder": "BAAI/bge-m3 (revision 5617a9f61b028005a4858fdac845db406aefb181)",
+    "reranker": "BAAI/bge-reranker-v2-m3 (revision 953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e)"
+  },
+  "case_prefix_counts": {
+    "DEV": 53,
+    "TEST": 28,
+    "gap": 12,
+    "UNSUPPORTED": 9,
+    "SF": 57
+  },
+  "integration_parity": {
+    "date": "2026-10-29",
+    "compared": 159,
+    "all_match": true,
+    "exact_matches": 159,
+    "comparisons": [
+      "final_ids",
+      "texts",
+      "clean",
+      "base"
+    ]
+  },
+  "fixed_query_parity": {
+    "date": "2026-10-30",
+    "compared": 159,
+    "all_match": true,
+    "mismatches_by_comparison": {
+      "final_ids": 0,
+      "texts": 0,
+      "clean": 0,
+      "base": 0
+    },
+    "elapsed_seconds": 60.75,
+    "result": "PASS",
+    "environment": "offline flags enabled; hosted provider variables unset; embedding on CPU; reranker on Apple MPS; no fallback"
+  },
+  "cases": [
+    {
+      "case_id": "DEV-consumer-loan-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-consumer-loan-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-consumer-loan-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-consumer-loan-04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-consumer-loan-05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-consumer-loan-06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-business-loan-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-business-loan-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-business-loan-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-business-loan-04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-business-loan-05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-business-loan-06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-mortgage-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-mortgage-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-mortgage-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-mortgage-04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-mortgage-05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-mortgage-06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-insurance-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-insurance-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-insurance-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-insurance-04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-insurance-05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-insurance-06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-kreddy-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-kreddy-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-kreddy-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-kreddy-04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-kreddy-05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-kreddy-06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-company-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-company-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-partners-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-partners-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-glossary-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-glossary-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-guides-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-guides-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-privacy-policies-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-privacy-policies-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-collection-overview-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-collection-overview-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-support-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-support-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-private-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-private-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-private-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-business-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-business-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-business-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-mortgage-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-mortgage-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "DEV-blog-mortgage-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-consumer-loan-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-consumer-loan-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-consumer-loan-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-business-loan-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-business-loan-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-business-loan-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-mortgage-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-mortgage-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-mortgage-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-insurance-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-insurance-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-insurance-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-kreddy-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-kreddy-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-kreddy-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-company-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-partners-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-glossary-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-guides-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-privacy-policies-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-collection-overview-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-support-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-blog-private-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-blog-private-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-blog-business-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-blog-business-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-blog-mortgage-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "TEST-blog-mortgage-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-001",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-002",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-003",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-004",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-005",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-006",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-007",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-008",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-009",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-INCOME-010",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-WITHDRAWAL-001",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "gap-DEMO-MORTGAGE-001",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-07",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-08",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "UNSUPPORTED-09",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C07",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C08",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C09",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C10",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-C11",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B07",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B08",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B09",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-B10",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M07",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M08",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-M09",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-T01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-T02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-T03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-T04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-T05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-L01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-L02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-A01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-A02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-A03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-A04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-O01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-O02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-O03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-O04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-O05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-O06",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-G01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-G02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-G03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-G04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-D01",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-D02",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-D03",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-D04",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-D05",
+      "integration_parity": "match"
+    },
+    {
+      "case_id": "SF-D06",
+      "integration_parity": "match"
+    }
+  ]
+}

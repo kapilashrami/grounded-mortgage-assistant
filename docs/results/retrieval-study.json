@@ -1,0 +1,257 @@
+{
+  "study": "Earlier chunking, embedding and index study (capstone milestone M2)",
+  "date": "2026-10-14 to 2026-10-15 (final decision confirmed 15 October 2026)",
+  "source": [
+    "Legacy/lendo-capstone/docs/m2-comparison.md",
+    "Legacy/evaluation/rag-retrieval-eval-lab/comparisons/2026-10-14-lendo-m2/results/3328a550bec6a2ff-heldout.json",
+    "Legacy/evaluation/rag-retrieval-eval-lab/comparisons/2026-10-14-lendo-m2/results/38d1e5cde8be36e8-heldout.json",
+    "lendo-capstone-framework/docs/submission/technical-documentation.md (section 4)"
+  ],
+  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "what_it_measures": "Whether the labelled source evidence for each question appears among the top 5 retrieved passages (complete evidence@5), comparing a sentence-chunk baseline with the selected whole-Q&A dense configuration on development, held-out and historical diagnostic splits. 195 development configurations reached a terminal result (185 valid, 2 protocol failures, 8 ineligible eight-bit PQ configurations), 69 distinct pipelines.",
+  "what_it_does_not_show": "Answer quality or semantic correctness. Labels were authored and source-checked by an agent, are source-specific and non-exhaustive, so a valid answer from another source can score as a miss. It used an earlier corpus snapshot (1,477 records) than the current runtime (1,476). The held-out gain is one case and its paired interval includes zero. The selected configuration used no reranking; the current runtime adds two-view retrieval and a local reranker, which this study did not evaluate.",
+  "baseline": {
+    "chunking": "sentence 256/32",
+    "embedding": "E5-small",
+    "index": "Flat",
+    "retrieval": "dense, no reranking"
+  },
+  "selected": {
+    "chunking": "whole Q&A",
+    "embedding": "BGE-M3",
+    "index": "HNSW (M=32, construction 80, search 32)",
+    "retrieval": "dense, no reranking"
+  },
+  "selection_rule": "Four configurations tied on development quality; the frozen winner had the lowest observed p95 among them. Frozen before held-out evaluation.",
+  "results_by_split": [
+    {
+      "split": "development",
+      "selected_complete": "52/53",
+      "baseline_complete": "47/53",
+      "selected_labelled_evidence_at_5": 0.9811,
+      "baseline_labelled_evidence_at_5": 0.8962,
+      "p95_ms_selected": 36.04,
+      "p95_ms_baseline": 4.81,
+      "paired_95_interval_pp": [
+        0.0,
+        17.92
+      ]
+    },
+    {
+      "split": "held-out",
+      "selected_complete": "26/28",
+      "baseline_complete": "25/28",
+      "selected_labelled_evidence_at_5": 0.9286,
+      "baseline_labelled_evidence_at_5": 0.8929,
+      "p95_ms_selected": 36.18,
+      "p95_ms_baseline": 5.5,
+      "paired_95_interval_pp": [
+        0.0,
+        11.11
+      ],
+      "family_clusters": 27
+    },
+    {
+      "split": "historical diagnostics",
+      "selected_complete": "45/57",
+      "baseline_complete": "45/57",
+      "selected_labelled_evidence_at_5": 0.8655,
+      "baseline_labelled_evidence_at_5": 0.8421,
+      "p95_ms_selected": 50.52,
+      "p95_ms_baseline": 7.02
+    }
+  ],
+  "held_out_change": {
+    "gained": [
+      "TEST-business-loan-03"
+    ],
+    "lost": [],
+    "missed_by_both": [
+      "TEST-business-loan-01",
+      "TEST-kreddy-01"
+    ]
+  },
+  "held_out_cases": [
+    {
+      "case_id": "TEST-consumer-loan-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-consumer-loan-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-consumer-loan-03",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-business-loan-01",
+      "expected_status": "supported",
+      "baseline": "incomplete",
+      "selected": "incomplete"
+    },
+    {
+      "case_id": "TEST-business-loan-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-business-loan-03",
+      "expected_status": "supported",
+      "baseline": "incomplete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-mortgage-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-mortgage-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-mortgage-03",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-insurance-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-insurance-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-insurance-03",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-kreddy-01",
+      "expected_status": "supported",
+      "baseline": "incomplete",
+      "selected": "incomplete"
+    },
+    {
+      "case_id": "TEST-kreddy-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-kreddy-03",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-company-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-partners-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-glossary-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-guides-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-privacy-policies-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-collection-overview-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-support-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-blog-private-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-blog-private-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-blog-business-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-blog-business-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-blog-mortgage-01",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "TEST-blog-mortgage-02",
+      "expected_status": "supported",
+      "baseline": "complete",
+      "selected": "complete"
+    },
+    {
+      "case_id": "UNSUPPORTED-08",
+      "expected_status": "unsupported",
+      "baseline": "excluded (unsupported)",
+      "selected": "excluded (unsupported)"
+    },
+    {
+      "case_id": "UNSUPPORTED-09",
+      "expected_status": "unsupported",
+      "baseline": "excluded (unsupported)",
+      "selected": "excluded (unsupported)"
+    }
+  ],
+  "conclusion": "Supports the dense BGE-M3 direction with a modest, not decisive, retrieval gain."
+}

@@ -1,0 +1,1550 @@
+{
+  "study": "Browser suites through the real frontend: 16-check journey and 20-question suite",
+  "date": "2026-10-31",
+  "source": [
+    "evidence/browser/2026-10-31-cleanup-e2e/README.md",
+    "evidence/browser/2026-10-31-cleanup-e2e/results-run-*.json",
+    "evidence/browser/2026-10-31-openai-provider/README.md",
+    "evidence/browser/2026-10-31-openai-provider/*.json"
+  ],
+  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "what_it_measures": "Whether scripted Playwright runs through the real chat UI and engineering console pass fixed functional checks: a 16-check demo journey (knowledge answer with citation, LTV card, refinance intent, draft, form handoff, privacy rejection, console, reset) and a 20-question suite across knowledge, LTV, journey, unsupported and privacy categories.",
+  "what_it_does_not_show": "Unseen acceptance or general model quality. These are exposed functional examples written during development, with few runs per configuration. Question text, answers and screenshots are not published; checks and questions appear by ID only.",
+  "journey_check_ids": {
+    "JC01": "chat opens",
+    "JC02": "knowledge answer content check",
+    "JC03": "knowledge answer has English PDF citation",
+    "JC04": "citation PDF opens",
+    "JC05": "LTV card shows expected value",
+    "JC06": "refinance intent acknowledged without card or draft",
+    "JC07": "draft shows expected fields",
+    "JC08": "form opens on first step",
+    "JC09": "form amounts prefilled",
+    "JC10": "form radio selections prefilled",
+    "JC11": "form amounts stay editable",
+    "JC12": "synthetic email rejected by privacy gate",
+    "JC13": "console lists traces",
+    "JC14": "console Flow shows LLM and RAG cards",
+    "JC15": "console shows privacy detection reason",
+    "JC16": "Start over does not recover old amounts"
+  },
+  "question_categories": {
+    "knowledge": [
+      "K01",
+      "K02",
+      "K03",
+      "K04",
+      "K05",
+      "K06",
+      "K07",
+      "K08",
+      "K09",
+      "K10",
+      "K11"
+    ],
+    "ltv": [
+      "L01",
+      "L02",
+      "L03",
+      "L04"
+    ],
+    "journey": [
+      "J01",
+      "J02"
+    ],
+    "unsupported": [
+      "U01",
+      "U02"
+    ],
+    "privacy": [
+      "P01"
+    ]
+  },
+  "summary": {
+    "final_openai_gpt_4_1": {
+      "journey": "16/16 in 3 of 3 runs",
+      "questions": "19/20 in 3 of 3 runs",
+      "only_failure": "U02"
+    },
+    "final_local_qwen": {
+      "journey": "16/16 in 1 run",
+      "questions": "19/20 in 1 run",
+      "only_failure": "U02"
+    },
+    "post_cleanup_local_qwen_journey": "16/16 in 3 of 3 consecutive runs",
+    "known_routing_limit": "U02 (unsupported category) contains a digit, which keeps it off the public-question path, so it receives a rephrase request instead of the not-found message. It fails in every question run.",
+    "defects_exposed_by_openai_before_fixes": [
+      "K05 failed closed in 2 of 3 early runs: 58 of 1,476 corpus records lacked a citable source URL; selection is now offered only citable records.",
+      "Refinance intent labelled a calculation after an LTV in 2 of 6 runs; a turn without amounts or calculation wording can no longer start a calculation."
+    ]
+  },
+  "runs": [
+    {
+      "phase": "post-cleanup demo flow",
+      "provider": "local",
+      "model": "Qwen3.5-9B-MLX-4bit",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "post-cleanup demo flow",
+      "provider": "local",
+      "model": "Qwen3.5-9B-MLX-4bit",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "post-cleanup demo flow",
+      "provider": "local",
+      "model": "Qwen3.5-9B-MLX-4bit",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "early OpenAI run, before citable-record fix",
+      "provider": "openai",
+      "model": "not stated in the run file",
+      "suite": "questions",
+      "passed": 18,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "fail"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ],
+      "note": "K05 failed closed: the model selected a record without a citable source URL."
+    },
+    {
+      "phase": "early OpenAI run, before citable-record fix",
+      "provider": "openai",
+      "model": "not stated in the run file",
+      "suite": "questions",
+      "passed": 18,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "fail"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ],
+      "note": "K05 failed closed: the model selected a record without a citable source URL."
+    },
+    {
+      "phase": "OpenAI run, before intent fix",
+      "provider": "openai",
+      "model": "not stated in the run file",
+      "suite": "journey",
+      "passed": 15,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "fail"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ],
+      "note": "JC06 failed: the refinance intent was labelled a calculation after an LTV."
+    },
+    {
+      "phase": "OpenAI run, before intent fix",
+      "provider": "openai",
+      "model": "not stated in the run file",
+      "suite": "questions",
+      "passed": 18,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "pass"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "fail"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ],
+      "note": "J01 failed: the refinance intent was labelled a calculation after an LTV."
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "suite": "questions",
+      "passed": 19,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "pass"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "suite": "questions",
+      "passed": 19,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "pass"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "suite": "questions",
+      "passed": 19,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "pass"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "local",
+      "model": "Qwen3.5-9B",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "final, all fixes applied",
+      "provider": "local",
+      "model": "Qwen3.5-9B",
+      "suite": "questions",
+      "passed": 19,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "pass"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ]
+    },
+    {
+      "phase": "after rehearsal fixes",
+      "provider": "openai (per receipt context)",
+      "model": "not stated in the run file",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ],
+      "note": "Re-run after the recording-rehearsal fixes (stale-calculation fix, then console fix). The receipt places these runs in the OpenAI rehearsal but does not name the model in the file."
+    },
+    {
+      "phase": "after rehearsal fixes",
+      "provider": "openai (per receipt context)",
+      "model": "not stated in the run file",
+      "suite": "journey",
+      "passed": 16,
+      "total": 16,
+      "checks": [
+        {
+          "id": "JC01",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC02",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC03",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC04",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC05",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC06",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC07",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC08",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC09",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC10",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC11",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC12",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC13",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC14",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC15",
+          "outcome": "pass"
+        },
+        {
+          "id": "JC16",
+          "outcome": "pass"
+        }
+      ],
+      "note": "Re-run after the recording-rehearsal fixes (stale-calculation fix, then console fix). The receipt places these runs in the OpenAI rehearsal but does not name the model in the file."
+    },
+    {
+      "phase": "after rehearsal fixes",
+      "provider": "openai (per receipt context)",
+      "model": "not stated in the run file",
+      "suite": "questions",
+      "passed": 19,
+      "total": 20,
+      "cases": [
+        {
+          "id": "K01",
+          "outcome": "pass"
+        },
+        {
+          "id": "K02",
+          "outcome": "pass"
+        },
+        {
+          "id": "K03",
+          "outcome": "pass"
+        },
+        {
+          "id": "K04",
+          "outcome": "pass"
+        },
+        {
+          "id": "K05",
+          "outcome": "pass"
+        },
+        {
+          "id": "K06",
+          "outcome": "pass"
+        },
+        {
+          "id": "K07",
+          "outcome": "pass"
+        },
+        {
+          "id": "K08",
+          "outcome": "pass"
+        },
+        {
+          "id": "K09",
+          "outcome": "pass"
+        },
+        {
+          "id": "K10",
+          "outcome": "pass"
+        },
+        {
+          "id": "K11",
+          "outcome": "pass"
+        },
+        {
+          "id": "L01",
+          "outcome": "pass"
+        },
+        {
+          "id": "L02",
+          "outcome": "pass"
+        },
+        {
+          "id": "J01",
+          "outcome": "pass"
+        },
+        {
+          "id": "J02",
+          "outcome": "pass"
+        },
+        {
+          "id": "L03",
+          "outcome": "pass"
+        },
+        {
+          "id": "L04",
+          "outcome": "pass"
+        },
+        {
+          "id": "U01",
+          "outcome": "pass"
+        },
+        {
+          "id": "U02",
+          "outcome": "fail"
+        },
+        {
+          "id": "P01",
+          "outcome": "pass"
+        }
+      ],
+      "note": "Re-run after the recording-rehearsal fixes (stale-calculation fix, then console fix). The receipt places these runs in the OpenAI rehearsal but does not name the model in the file."
+    }
+  ]
+}

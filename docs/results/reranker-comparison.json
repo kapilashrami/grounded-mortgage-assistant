@@ -1,0 +1,83 @@
+{
+  "study": "Fixed-candidate reranker comparison: local BGE versus Cohere Rerank v5 Pro",
+  "date": "2026-10-30 (overnight run, finished before 02:55 UTC)",
+  "source": [
+    "evidence/evaluation/2026-10-30-overnight/REPORT.md",
+    "evidence/evaluation/2026-10-30-overnight/reranker-comparison.json"
+  ],
+  "source_note": "Raw evidence is private (Lendo-owned corpus and logs) and is not published. Sources are listed as paths relative to the private capstone folder.",
+  "what_it_measures": "Reviewed support recovery after reranking the same fixed candidate sets: how many supported cases have all required facts in the five packed evidence records, and how many required facts are recovered. Candidate IDs and order, query and document strings, equivalence handling, five-record packing and the 12,000-character budget were held fixed.",
+  "what_it_does_not_show": "Answer accuracy, a held-out result or an improved conversation; no generator was run on Cohere evidence. These are lower bounds on exposed controls. Latencies have different boundaries (local warm GPU prediction versus HTTP over the network) and come from one run. Cohere did not return a model identity, so it is unverified.",
+  "cases_total": 159,
+  "paired_successful": 159,
+  "supported_cases_labelled": 149,
+  "required_facts": 217,
+  "local_bge": {
+    "model": "BAAI/bge-reranker-v2-m3",
+    "complete_supported_cases": "129/149",
+    "required_facts_recovered": "193/217",
+    "latency_ms": {
+      "median": 219.3,
+      "mean": 281.9,
+      "p95": 795.9
+    },
+    "latency_scope": "warm prediction on Apple MPS, float32, batch 32; loading and warm-up excluded",
+    "scores_reproduced_saved_baseline": true
+  },
+  "cohere": {
+    "model_requested": "rerank-v5.0-pro",
+    "model_returned": "not provided by the API (unverified)",
+    "complete_supported_cases": "131/149",
+    "required_facts_recovered": "195/217",
+    "latency_ms": {
+      "median": 294.9,
+      "mean": 302.7,
+      "p95": 361.4
+    },
+    "latency_scope": "HTTP request and response including network; deliberate request pacing excluded"
+  },
+  "candidate_ceiling": {
+    "complete_supported_cases": "136/149",
+    "required_facts": "201/217"
+  },
+  "cases_gained_complete_support": [
+    "DEV-consumer-loan-01",
+    "SF-B05",
+    "SF-C06",
+    "SF-M09"
+  ],
+  "cases_lost_complete_support": [
+    "SF-C02",
+    "gap-DEMO-INCOME-004"
+  ],
+  "fact_pairs_gained": {
+    "count": 6,
+    "case_ids": [
+      "DEV-consumer-loan-01",
+      "SF-A03",
+      "SF-B05",
+      "SF-C06",
+      "SF-M01",
+      "SF-M09"
+    ]
+  },
+  "fact_pairs_lost": {
+    "count": 4,
+    "case_ids": [
+      "DEV-insurance-06",
+      "SF-C02",
+      "SF-M01",
+      "gap-DEMO-INCOME-004"
+    ]
+  },
+  "notes": [
+    "SF-M01 exchanged one recovered fact for another (one gained, one lost).",
+    "All other supported cases kept the same complete-support status."
+  ],
+  "cost_usd_buffered_estimate": {
+    "cohere": 0.012283,
+    "cohere_requests": 159,
+    "note": "Includes a 10% accounting buffer; not a provider invoice. The same overnight ledger also covered 10 OpenAI diagnostic requests ($0.021867), total $0.034150 of a $5 cap."
+  },
+  "decision": "Local BGE stays the runtime reranker: Cohere gave a small net support gain that included regressions."
+}
