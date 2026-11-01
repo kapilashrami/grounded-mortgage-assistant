@@ -166,3 +166,5 @@ Browser testing found these defects. Each was reproduced in the real UI and fixe
 A final UI check rejected six synthetic PII cases with an empty trace question and answer and zero model tokens. It failed closed while the detector was paused and recovered on retry, and pressing Start over during a pending answer brought back none of the old facts.
 
 Two limits are still open. Any digit keeps a question off the public path, so U02 gets a rephrase request instead of the not-found message. A bare LTV question without amounts retrieves instead of asking for them.
+
+> *Update, 1 November 2026:* both are fixed, and the 23-question suite passes 23/23 on local Qwen.

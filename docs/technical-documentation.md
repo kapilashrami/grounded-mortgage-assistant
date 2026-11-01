@@ -102,6 +102,8 @@ Final testing and a recording rehearsal found eight more defects. Each was repro
 
 A 20-question browser suite now covers these cases. Two routing limits remain. Any digit keeps a question off the public path, so `Who won the football World Cup in 2022?` gets a rephrase request instead of the not-found message. A bare `What is my loan to value?` also goes to retrieval when it should ask for the two amounts.
 
+> *Update, 1 November 2026:* both limits are fixed.
+
 The engineering console shows projections, retrieval IDs, model identity, usage, cost and stages, including a safe clarification reason. It does not keep every candidate, reranker score or model payload, so exact replay is not possible. Debug content stays in RAM and is purged with the session.
 
 This document describes a working local demonstration and the limits of what was measured. General model reliability, final unseen acceptance, mobile visual validation and business impact are not established. The system has no access to customer accounts, no live database connection and no ability to execute financial transactions. The next quality work is a frozen whole-journey evaluation that covers the current routing limits and the historical negation regressions, scored by humans against the sources before an automated judge is relied on.

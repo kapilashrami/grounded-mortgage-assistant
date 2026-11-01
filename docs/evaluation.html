@@ -116,6 +116,14 @@
   }
   p { margin: 0 0 28px; }
   ul { margin: 0 0 28px; padding-left: 28px; }
+  blockquote {
+    margin: -8px 0 28px;
+    padding: 2px 0 2px 20px;
+    border-left: 3px solid var(--rule);
+    color: var(--muted);
+    font-size: 0.9em;
+  }
+  blockquote p { margin: 0; }
   li { margin-bottom: 10px; padding-left: 4px; }
   a {
     color: var(--link);
@@ -583,6 +591,9 @@
 </ul>
 <p>A final UI check rejected six synthetic PII cases with an empty trace question and answer and zero model tokens. It failed closed while the detector was paused and recovered on retry, and pressing Start over during a pending answer brought back none of the old facts.</p>
 <p>Two limits are still open. Any digit keeps a question off the public path, so U02 gets a rephrase request instead of the not-found message. A bare LTV question without amounts retrieves instead of asking for them.</p>
+<blockquote>
+<p><em>Update, 1 November 2026:</em> both are fixed, and the 23-question suite passes 23/23 on local Qwen.</p>
+</blockquote>
   </article>
   <footer>Source: <a href="https://github.com/kapilashrami/grounded-mortgage-assistant">github.com/kapilashrami/grounded-mortgage-assistant</a></footer>
 </main>
