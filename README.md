@@ -37,7 +37,7 @@ python3.14 -m venv .venv
 .venv/bin/python -m pytest -q
 ```
 
-The tests need no corpus and no model. Running the backend needs both, plus the local PII detector; [docs/setup.md](docs/setup.md) covers the settings and how to build a bundle from the sample records.
+The tests need no corpus and no model. Running the backend needs a model and the local PII detector, and product questions also need a search bundle. [docs/setup.md](docs/setup.md) covers the settings and the one command that builds a bundle from the sample records.
 
 ## Documentation
 

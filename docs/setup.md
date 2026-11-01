@@ -13,7 +13,7 @@ python3.14 -m venv .venv
 
 ## Running the backend
 
-The backend needs three things: a frozen corpus bundle at `DATA_DIR`, an LLM, and the local PII detector, which has its own environment ([services/pii/README.md](../services/pii/README.md)). Embeddings (`BAAI/bge-m3`) and the reranker (`BAAI/bge-reranker-v2-m3`) load from the Hugging Face cache at pinned revisions, so download them once before running offline.
+The backend needs an LLM and the local PII detector, and product questions also need a retrieval bundle at `DATA_DIR`. The detector has its own environment ([services/pii/README.md](../services/pii/README.md)). Embeddings (`BAAI/bge-m3`) and the reranker (`BAAI/bge-reranker-v2-m3`) load from the Hugging Face cache at pinned revisions, so download them once before running offline.
 
 | Setting | What it does |
 | --- | --- |
@@ -34,11 +34,14 @@ Send turns to `POST /api/chat`, and open the engineering console at `http://127.
 
 ## Retrieval without the private corpus
 
-A fresh clone can't answer product questions yet, because the reference bundle belongs to the company. A loader that turns [data/sample/records.jsonl](../data/sample/records.jsonl) into a bundle is planned. Until it exists, you can build one by hand:
+The reference bundle belongs to the company, so a fresh clone has none. The app still starts without it: product questions get a fixed "ask about the available information" reply, and the LTV, draft and privacy paths work as usual.
 
-1. Download `BAAI/bge-m3` and `BAAI/bge-reranker-v2-m3`.
-2. Embed each record's question and answer with BGE-M3 and build a FAISS HNSW index.
-3. Write the records, vectors, index and a SHA-256 manifest in the layout that `validate_frozen_bundle` in [rag/retrieval.py](../src/grounded_mortgage_assistant/rag/retrieval.py) reads.
-4. Replace the pinned hashes and record count in that function with the values from your manifest, and point `DATA_DIR` at the bundle.
+To try retrieval on synthetic data, build a bundle from the 20 records in [data/sample/records.jsonl](../data/sample/records.jsonl):
 
-The LTV, draft and privacy logic never uses retrieval, but the app still loads the bundle when it starts. Letting it start without one is part of the loader work.
+```sh
+PYTHONPATH=src .venv/bin/python scripts/build_sample_bundle.py
+```
+
+The script embeds each record twice with the pinned BGE-M3, a plain question-and-answer view and a labelled view, and builds a FAISS HNSW index for each. It writes them to `DATA_DIR/sample-bundle`, by default `data/corpus/sample-bundle`, which Git ignores. The models download from Hugging Face on the first run.
+
+The bundle's manifest hashes its own files and names the models, so a changed file or a different model stops startup. Sample answers cite the records' `example.com` links and have no PDF. If the company's pinned bundle is also present, it always wins.
