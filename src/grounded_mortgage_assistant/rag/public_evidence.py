@@ -7,7 +7,13 @@ import json
 from pathlib import Path
 from typing import Any
 
-from grounded_mortgage_assistant.rag.retrieval import ARTIFACT, validate_frozen_bundle
+from grounded_mortgage_assistant.rag.retrieval import (
+    ARTIFACT,
+    SAMPLE_BUNDLE,
+    bundle_kind,
+    validate_frozen_bundle,
+)
+from grounded_mortgage_assistant.rag.sample_bundle import validate_sample_bundle
 
 
 class PublicEvidence:
@@ -202,3 +208,57 @@ class PublicEvidence:
             "related_articles": [],
             "actions": [],
         }
+
+
+class SampleEvidence(PublicEvidence):
+    """Sample or empty evidence: same rendering, web-link citations, no PDFs."""
+
+    def __init__(self, records: dict[str, dict[str, Any]] | None = None) -> None:
+        self.records = records or {}
+        self.sources = {}
+        self.by_path = {}
+        self.english = None
+        self.english_sources = {}
+        self._citable = {}
+
+    @classmethod
+    def from_bundle(cls, path: Path = SAMPLE_BUNDLE) -> SampleEvidence:
+        validate_sample_bundle(path)
+        rows = json.loads((path / "records.json").read_text())
+        return cls({row["id"]: row["metadata"] for row in rows})
+
+    def citation(self, record_id: str) -> dict[str, Any]:
+        metadata = self.records[record_id]
+        contexts = metadata.get("source_context", [])
+        if not contexts:
+            raise ValueError("Citation metadata is incomplete.")
+        context = contexts[0]
+        url = context.get("url")
+        if not isinstance(url, str) or not url.startswith("https://"):
+            raise ValueError("Citation source URL is unavailable.")
+        return {
+            "evidence_id": record_id,
+            "pages": [],
+            "qualifications": metadata.get("qualifications", []),
+            "source_id": context.get("source_id", record_id),
+            "url": url,
+            "pdf_url": None,
+            "pdf_language": None,
+            "section": context.get("title", ""),
+            "source_versions": [{"title": context["title"]}]
+            if context.get("title")
+            else [],
+        }
+
+    def pdf(self, source_id: str, digest: str) -> Path | None:
+        return None
+
+
+def load_evidence() -> PublicEvidence:
+    """Evidence for whichever bundle is present; empty when there is none."""
+    kind = bundle_kind()
+    if kind == "frozen":
+        return PublicEvidence()
+    if kind == "sample":
+        return SampleEvidence.from_bundle()
+    return SampleEvidence()

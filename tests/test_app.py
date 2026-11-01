@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 from support import FixtureEvidence
 
 from grounded_mortgage_assistant.app import create_app
-from grounded_mortgage_assistant.config import not_found_answer
+from grounded_mortgage_assistant.config import not_found_answer, unavailable_answer
 from grounded_mortgage_assistant.guardrails.pii import PiiDecision
 from grounded_mortgage_assistant.llm.conversation import (
     EvidenceSelection,
@@ -19,6 +19,7 @@ from grounded_mortgage_assistant.llm.interpretation_candidates import (
     build_candidate_catalog,
     expand_selection,
 )
+from grounded_mortgage_assistant.rag.public_evidence import SampleEvidence
 from grounded_mortgage_assistant.state.memory import (
     FactOperation,
     TurnInterpretation,
@@ -942,3 +943,21 @@ def test_plain_amount_statement_is_not_promoted_to_a_calculation():
         "My mortgage is SEK 1820000 and my property value is SEK 2600000.",
     ).json()
     assert "calculations" not in body
+
+
+def test_the_app_starts_without_a_bundle_and_still_calculates():
+    # No retriever, no corpus: product questions fail closed with the fixed
+    # answer, and the mortgage path does not need retrieval at all.
+    with TestClient(
+        make_app(interpreter=chat_first_native(), evidence=SampleEvidence())
+    ) as client:
+        public = chat(client, "s", "one", "What is a mortgage loan?").json()
+        assert public["status"] == "CLARIFY"
+        assert public["answer"] == unavailable_answer("")
+        ltv = chat(
+            client,
+            "s",
+            "two",
+            "My existing mortgage is 2000000 and property is worth 2500000, what is my LTV?",
+        ).json()
+        assert ltv["status"] == "ANSWERED"

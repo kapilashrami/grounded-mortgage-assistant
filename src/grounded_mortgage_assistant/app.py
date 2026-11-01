@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import re
 import time
 from collections import deque
@@ -53,9 +54,12 @@ from grounded_mortgage_assistant.llm.conversation import (
     select_evidence,
 )
 from grounded_mortgage_assistant.rag.answer import answer_public_question
-from grounded_mortgage_assistant.rag.public_evidence import PublicEvidence
+from grounded_mortgage_assistant.rag.public_evidence import (
+    PublicEvidence,
+    load_evidence,
+)
 from grounded_mortgage_assistant.rag.public_questions import PublicQuestionScope
-from grounded_mortgage_assistant.rag.retrieval import FrozenRetriever
+from grounded_mortgage_assistant.rag.retrieval import FrozenRetriever, bundle_kind
 from grounded_mortgage_assistant.state.memory import (
     MemoryError,
     StageResult,
@@ -227,7 +231,7 @@ def create_app(
 ) -> FastAPI:
     provider = provider or provider_from_env()
     runtime = runtime or MemoryRuntime()
-    evidence = evidence or PublicEvidence()
+    evidence = evidence or load_evidence()
     checker = pii_checker or check_pii
     public_questions = PublicQuestionScope(evidence.records)
     graph = build_graph()
@@ -434,7 +438,16 @@ def create_app(
                 app.state.provider_capacity = await verify_local_provider()
             else:
                 await verify_openai_provider(provider)
-            frozen = FrozenRetriever()
+            kind = bundle_kind()
+            if kind is None:
+                # The mortgage path needs no corpus; product questions get the
+                # fixed unavailable answer until a bundle is built.
+                logging.getLogger(__name__).warning(
+                    "No retrieval bundle at DATA_DIR; run scripts/build_sample_bundle.py"
+                )
+            else:
+                frozen = FrozenRetriever()
+            app.state.bundle = kind
 
         async def sweep_loop() -> None:
             while True:
@@ -454,6 +467,7 @@ def create_app(
 
     app = FastAPI(title="Grounded mortgage assistant", lifespan=lifespan)
     app.state.provider_capacity = None
+    app.state.bundle = None
     app.mount(
         "/inspect/static",
         StaticFiles(directory=Path(__file__).parent / "console/static"),

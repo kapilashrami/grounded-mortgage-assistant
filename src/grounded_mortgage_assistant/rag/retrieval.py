@@ -6,7 +6,7 @@ import hashlib
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import faiss
 import numpy as np
@@ -14,10 +14,24 @@ import torch
 from sentence_transformers import CrossEncoder, SentenceTransformer
 
 from grounded_mortgage_assistant.config import EMBEDDING_MODEL, RERANKER_MODEL, data_dir
+from grounded_mortgage_assistant.rag.sample_bundle import validate_sample_bundle
 
 # The frozen corpus lives outside the repository (DATA_DIR); manifest paths are relative to it.
 DATA = data_dir()
 ARTIFACT = DATA / "artifacts/m3/2026-10-29-english-balanced-demo/retrieval-final-v2"
+# Built by scripts/build_sample_bundle.py from the synthetic sample records.
+SAMPLE_BUNDLE = DATA / "sample-bundle"
+
+
+def bundle_kind(
+    artifact: Path = ARTIFACT, sample: Path = SAMPLE_BUNDLE
+) -> Literal["frozen", "sample"] | None:
+    """Which retrieval bundle is present. The pinned corpus always wins."""
+    if (artifact / "union/manifest.json").is_file():
+        return "frozen"
+    if (sample / "manifest.json").is_file():
+        return "sample"
+    return None
 
 
 def _device() -> str:
@@ -54,36 +68,62 @@ def validate_frozen_bundle(artifact: Path = ARTIFACT) -> dict[str, Any]:
 
 
 class FrozenRetriever:
-    def __init__(self) -> None:
+    """Two-view retrieval over the pinned corpus, or over a sample bundle.
+
+    With no argument it uses the frozen corpus at DATA_DIR if present, else the
+    sample bundle. The models can be injected for tests.
+    """
+
+    def __init__(
+        self,
+        sample_bundle: Path | None = None,
+        *,
+        embedder: Any | None = None,
+        reranker: Any | None = None,
+    ) -> None:
         torch.set_num_threads(1)
         faiss.omp_set_num_threads(1)
-        self.base_chunks = self._load("base/chunks.json")
-        self.clean_chunks = self._load("clean/chunks.json")
-        self.projections = self._load("clean/projections.json")
-        self.equivalence = self._load("equivalence-keys.json")
-        self._validate()
-        self.base = faiss.read_index(str(ARTIFACT / "base/index.faiss"))
-        self.clean = faiss.read_index(str(ARTIFACT / "clean/index.faiss"))
+        if sample_bundle is None and bundle_kind() == "frozen":
+            self.root = ARTIFACT
+            self.base_chunks = self._load("base/chunks.json")
+            self.clean_chunks = self._load("clean/chunks.json")
+            self.projections = self._load("clean/projections.json")
+            self.equivalence = self._load("equivalence-keys.json")
+            self._validate()
+        else:
+            self.root = sample_bundle or SAMPLE_BUNDLE
+            manifest = validate_sample_bundle(self.root)
+            self.base_chunks = [{"id": item} for item in manifest["record_ids"]]
+            self.clean_chunks = self.base_chunks
+            self.projections = self._load("projections.json")
+            # Each sample record is its own equivalence group.
+            self.equivalence = {item: item for item in manifest["record_ids"]}
+        self.base = faiss.read_index(str(self.root / "base/index.faiss"))
+        self.clean = faiss.read_index(str(self.root / "clean/index.faiss"))
         self.base.hnsw.efSearch = 32
         self.clean.hnsw.efSearch = 32
-        self.embedder = SentenceTransformer(
-            EMBEDDING_MODEL[0],
-            revision=EMBEDDING_MODEL[1],
-            device="cpu",
-            local_files_only=True,
-        )
-        self.embedder.max_seq_length = 8192
-        self.reranker = CrossEncoder(
-            RERANKER_MODEL[0],
-            revision=RERANKER_MODEL[1],
-            device=_device(),
-            max_length=8192,
-            local_files_only=True,
-        )
-        self.reranker.model.float().eval()
+        if embedder is None:
+            embedder = SentenceTransformer(
+                EMBEDDING_MODEL[0],
+                revision=EMBEDDING_MODEL[1],
+                device="cpu",
+                local_files_only=True,
+            )
+            embedder.max_seq_length = 8192
+        self.embedder = embedder
+        if reranker is None:
+            reranker = CrossEncoder(
+                RERANKER_MODEL[0],
+                revision=RERANKER_MODEL[1],
+                device=_device(),
+                max_length=8192,
+                local_files_only=True,
+            )
+            reranker.model.float().eval()
+        self.reranker = reranker
 
     def _load(self, relative: str) -> Any:
-        return json.loads((ARTIFACT / relative).read_text())
+        return json.loads((self.root / relative).read_text())
 
     def _validate(self) -> None:
         # The reviewed union manifest anchors both views and their row order.
@@ -182,7 +222,7 @@ class FrozenRetriever:
                 "embedder": "BAAI/bge-m3@5617a9f61b028005a4858fdac845db406aefb181",
                 "reranker": "BAAI/bge-reranker-v2-m3@953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
                 "embedder_device": "cpu",
-                "reranker_device": "mps",
+                "reranker_device": _device(),
                 "max_length": 8192,
                 "batch_size": 32,
             },
