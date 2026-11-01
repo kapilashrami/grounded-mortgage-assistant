@@ -31,13 +31,19 @@ PAGES = {
     "technical-documentation": {
         "description": "Technical documentation for a grounded mortgage chat assistant: retrieval, workflow, evaluation and limits.",
         "subtitle_from_source": True,
-        "nav": [("Evaluation", "evaluation.html"), ("Architecture", "architecture/overview.html")],
+        "nav": [
+            ("Evaluation", "evaluation.html"),
+            ("Architecture", "architecture/overview.html"),
+        ],
         "figures": technical_figures,
     },
     "evaluation": {
         "description": "Evaluation of a grounded mortgage chat assistant: relevance gate, rerankers, retrieval, browser suites, models and LLM-as-a-judge.",
         "subtitle": "Evaluation | October 2026",
-        "nav": [("Technical documentation", "technical-documentation.html"), ("Architecture", "architecture/overview.html")],
+        "nav": [
+            ("Technical documentation", "technical-documentation.html"),
+            ("Architecture", "architecture/overview.html"),
+        ],
         "figures": evaluation_figures,
     },
 }
@@ -45,8 +51,20 @@ PAGES = {
 
 def render_markdown(path: Path) -> str:
     return subprocess.run(
-        ["gh", "api", "markdown", "-f", f"text={path.read_text()}", "-f", "mode=gfm", "-f", f"context={REPO}"],
-        check=True, capture_output=True, text=True,
+        [
+            "gh",
+            "api",
+            "markdown",
+            "-f",
+            f"text={path.read_text()}",
+            "-f",
+            "mode=gfm",
+            "-f",
+            f"context={REPO}",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
     ).stdout
 
 
@@ -70,9 +88,15 @@ def rewrite_link(match: re.Match) -> str:
 def clean(body: str) -> str:
     body = re.sub(r'href="([^"]+)"', rewrite_link, body)
     body = body.replace(' dir="auto"', "").replace(' class="notranslate"', "")
-    body = re.sub(r"<h2>(.*?)</h2>", lambda m: f'<h2 id="{slug(m.group(1))}">{m.group(1)}</h2>', body)
+    body = re.sub(
+        r"<h2>(.*?)</h2>",
+        lambda m: f'<h2 id="{slug(m.group(1))}">{m.group(1)}</h2>',
+        body,
+    )
     body = body.replace("<markdown-accessiblity-table>", '<div class="table-wrap">')
-    body = body.replace("</markdown-accessiblity-table>", "</div>").replace('<table role="table">', "<table>")
+    body = body.replace("</markdown-accessiblity-table>", "</div>").replace(
+        '<table role="table">', "<table>"
+    )
     return body
 
 
@@ -95,7 +119,11 @@ def insert_figures(body: str, figures) -> tuple[str, str, str]:
         body = body[:start] + part + body[end:]
         if script:
             scripts.append(script)
-    return body, "\n".join(styles), "\n".join(f"<script>\n{s}\n</script>" for s in scripts)
+    return (
+        body,
+        "\n".join(styles),
+        "\n".join(f"<script>\n{s}\n</script>" for s in scripts),
+    )
 
 
 def build(name: str, config: dict) -> None:
@@ -107,7 +135,7 @@ def build(name: str, config: dict) -> None:
     else:
         head = re.search(r"<h1>(.*?)</h1>", body)
         title, subtitle = head.group(1), config["subtitle"]
-    body = (body[: head.start()] + body[head.end():]).strip()
+    body = (body[: head.start()] + body[head.end() :]).strip()
     words = len(re.sub(r"<[^>]+>", " ", body).split())
     style = scripts = ""
     if config["figures"]:

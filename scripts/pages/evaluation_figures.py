@@ -71,19 +71,29 @@ def read(results: Path, name: str):
     return json.loads((results / f"{name}.json").read_text())
 
 
-def figure(title: str, sub: str, inner: str, caption: str = "", extra_class: str = "") -> str:
+def figure(
+    title: str, sub: str, inner: str, caption: str = "", extra_class: str = ""
+) -> str:
     cap = f'<p class="cap">{caption}</p>' if caption else ""
     return f'<figure class="fig {extra_class}"><div class="fig-title">{title}</div><p class="fig-sub">{sub}</p>{inner}{cap}</figure>'
 
 
 def legend(items) -> str:
-    return '<div class="legend">' + "".join(
-        f'<span><i class="sw {cls}"></i>{label}</span>' for cls, label in items
-    ) + "</div>"
+    return (
+        '<div class="legend">'
+        + "".join(
+            f'<span><i class="sw {cls}"></i>{label}</span>' for cls, label in items
+        )
+        + "</div>"
+    )
 
 
 def waffle(groups, cols: int) -> str:
-    cells = "".join(f'<i class="{cls}" title="{title}"></i>' for n, cls, title in groups for _ in range(n))
+    cells = "".join(
+        f'<i class="{cls}" title="{title}"></i>'
+        for n, cls, title in groups
+        for _ in range(n)
+    )
     return f'<div class="waffle" style="grid-template-columns:repeat({cols},1fr);max-width:{min(620, cols * 26)}px" role="img" aria-label="{", ".join(f"{n} {t}" for n, _, t in groups)}">{cells}</div>'
 
 
@@ -105,17 +115,53 @@ def ratio(text: str) -> tuple[int, int]:
 
 def timeline(results):
     stages = [
-        ("Stage 1", "Earlier capstone phase", [("Retrieval study", "whole Q&amp;A + BGE-M3 chosen")]),
-        ("Stage 2", "Framework build", [("Retrieval parity", "159/159 exact"), ("Reranker", "local BGE kept"), ("LLM-as-a-judge", "547 of 549 graded")]),
-        ("Stage 3", "Final testing", [("Demo journey", "16/16, 3 runs in a row"), ("Relevance gate", "0.23 chosen"), ("OpenAI models", "gpt-4.1 kept")]),
+        (
+            "Stage 1",
+            "Earlier capstone phase",
+            [("Retrieval study", "whole Q&amp;A + BGE-M3 chosen")],
+        ),
+        (
+            "Stage 2",
+            "Framework build",
+            [
+                ("Retrieval parity", "159/159 exact"),
+                ("Reranker", "local BGE kept"),
+                ("LLM-as-a-judge", "547 of 549 graded"),
+            ],
+        ),
+        (
+            "Stage 3",
+            "Final testing",
+            [
+                ("Demo journey", "16/16, 3 runs in a row"),
+                ("Relevance gate", "0.23 chosen"),
+                ("OpenAI models", "gpt-4.1 kept"),
+            ],
+        ),
     ]
-    inner = '<div class="stages">' + "".join(
-        f'<div class="stage"><div class="stage-n">{n}</div><h4>{name}</h4>'
-        + "".join(f'<span class="chip">{label}: <b>{result}</b></span>' for label, result in chips)
+    inner = (
+        '<div class="stages">'
+        + "".join(
+            f'<div class="stage"><div class="stage-n">{n}</div><h4>{name}</h4>'
+            + "".join(
+                f'<span class="chip">{label}: <b>{result}</b></span>'
+                for label, result in chips
+            )
+            + "</div>"
+            for n, name, chips in stages
+        )
         + "</div>"
-        for n, name, chips in stages
-    ) + "</div>"
-    return ("timeline", "para:1", figure("Three stages of evaluation", "The main result of each study, in the order they ran.", inner), "")
+    )
+    return (
+        "timeline",
+        "para:1",
+        figure(
+            "Three stages of evaluation",
+            "The main result of each study, in the order they ran.",
+            inner,
+        ),
+        "",
+    )
 
 
 def relevance_gate(results):
@@ -127,11 +173,11 @@ def relevance_gate(results):
     ]
     inner = f"""<div class="gate">{legend([("k-a", "Supported question (the records can answer it)"), ("k-bad", "Unsupported question")])}
 <svg id="gate-svg" viewBox="0 0 680 206" role="img" aria-label="Top reranker score of each question, with the threshold line"></svg>
-<div class="gate-controls"><label for="gate-range">Threshold</label><input id="gate-range" type="range" min="0" max="0.95" step="0.01" value="{data['threshold']}"><strong id="gate-value">{data['threshold']:.2f}</strong><button type="button" id="gate-reset">Back to {data['threshold']:.2f}</button></div>
+<div class="gate-controls"><label for="gate-range">Threshold</label><input id="gate-range" type="range" min="0" max="0.95" step="0.01" value="{data["threshold"]}"><strong id="gate-value">{data["threshold"]:.2f}</strong><button type="button" id="gate-reset">Back to {data["threshold"]:.2f}</button></div>
 <div class="gate-readout"><div class="stat"><div class="stat-label">Supported questions kept</div><div class="stat-value" id="gate-kept"></div></div><div class="stat"><div class="stat-label">Unsupported questions rejected</div><div class="stat-value" id="gate-rejected"></div></div></div></div>"""
     script = f"""(function () {{
   const cases = {json.dumps(cases)};
-  const chosen = {data['threshold']};
+  const chosen = {data["threshold"]};
   const svg = document.getElementById('gate-svg');
   const ns = 'http://www.w3.org/2000/svg';
   const x = s => 40 + s * 600;
@@ -172,32 +218,59 @@ def relevance_gate(results):
   document.getElementById('gate-reset').addEventListener('click', () => {{ range.value = chosen; update(); }});
   update();
 }})();"""
-    return ("relevance-gate", "table", figure(
-        "Try the threshold",
-        "Each dot is one question, placed at the best reranker score its retrieval got. Questions left of the line are rejected without calling the model.",
-        inner,
-        "Faded dots are rejected. Drag right and supported questions start to fade long before the last unsupported ones do: rejecting all nine unsupported questions costs 28 supported ones.",
-    ), script)
+    return (
+        "relevance-gate",
+        "table",
+        figure(
+            "Try the threshold",
+            "Each dot is one question, placed at the best reranker score its retrieval got. Questions left of the line are rejected without calling the model.",
+            inner,
+            "Faded dots are rejected. Drag right and supported questions start to fade long before the last unsupported ones do: rejecting all nine unsupported questions costs 28 supported ones.",
+        ),
+        script,
+    )
 
 
 def reranker(results):
     data = read(results, "reranker-comparison")
     local, total = ratio(data["local_bge"]["complete_supported_cases"])
     cohere, _ = ratio(data["cohere"]["complete_supported_cases"])
-    gained, lost = len(data["cases_gained_complete_support"]), len(data["cases_lost_complete_support"])
+    gained, lost = (
+        len(data["cases_gained_complete_support"]),
+        len(data["cases_lost_complete_support"]),
+    )
     both = local - lost
     neither = total - both - gained - lost
-    inner = legend([
-        ("k-both", f"Both complete: {both}"), ("k-a", f"Only local BGE: {lost}"),
-        ("k-b", f"Only Cohere: {gained}"), ("k-none", f"Neither: {neither}"),
-    ]) + waffle([(both, "k-both", "both"), (lost, "k-a", "only local BGE"), (gained, "k-b", "only Cohere"), (neither, "k-none", "neither")], 25)
-    inner += equation([("Local BGE", both, lost, "a", local), ("Cohere", both, gained, "b", cohere)])
-    return ("reranker-comparison", "table", figure(
-        f"Where the two rerankers differ, out of {total} cases",
-        "Each square is one supported case. Only the colored squares separate the rerankers.",
-        inner,
-        f"The {both} gray cases count for both, so Cohere's lead comes from {gained} against {lost}. A split that small is easily luck, and it needs a network call and a per-request cost.",
-    ), "")
+    inner = legend(
+        [
+            ("k-both", f"Both complete: {both}"),
+            ("k-a", f"Only local BGE: {lost}"),
+            ("k-b", f"Only Cohere: {gained}"),
+            ("k-none", f"Neither: {neither}"),
+        ]
+    ) + waffle(
+        [
+            (both, "k-both", "both"),
+            (lost, "k-a", "only local BGE"),
+            (gained, "k-b", "only Cohere"),
+            (neither, "k-none", "neither"),
+        ],
+        25,
+    )
+    inner += equation(
+        [("Local BGE", both, lost, "a", local), ("Cohere", both, gained, "b", cohere)]
+    )
+    return (
+        "reranker-comparison",
+        "table",
+        figure(
+            f"Where the two rerankers differ, out of {total} cases",
+            "Each square is one supported case. Only the colored squares separate the rerankers.",
+            inner,
+            f"The {both} gray cases count for both, so Cohere's lead comes from {gained} against {lost}. A split that small is easily luck, and it needs a network call and a per-request cost.",
+        ),
+        "",
+    )
 
 
 def retrieval_study(results):
@@ -205,40 +278,76 @@ def retrieval_study(results):
     change = data["held_out_change"]
     held = next(r for r in data["results_by_split"] if r["split"] == "held-out")
     selected, total = ratio(held["selected_complete"])
-    gained, lost, neither = len(change["gained"]), len(change["lost"]), len(change["missed_by_both"])
+    gained, lost, neither = (
+        len(change["gained"]),
+        len(change["lost"]),
+        len(change["missed_by_both"]),
+    )
     both = selected - gained
-    inner = legend([("k-both", f"Both found it: {both}"), ("k-a", f"Only the selected setup: {gained}"), ("k-none", f"Both missed: {neither}")])
-    inner += waffle([(both, "k-both", "both"), (gained, "k-a", "only selected"), (lost, "k-b", "only baseline"), (neither, "k-none", "both missed")], 14)
-    return ("earlier-retrieval-study", "table", figure(
-        f"Held-out questions: {selected}/{total} against {selected - gained + lost}/{total}",
-        "Each square is one held-out question with complete labelled evidence in the top 5.",
-        inner,
-        "The whole held-out gain is a single question, which is why the study supports the choice only modestly.",
-    ), "")
+    inner = legend(
+        [
+            ("k-both", f"Both found it: {both}"),
+            ("k-a", f"Only the selected setup: {gained}"),
+            ("k-none", f"Both missed: {neither}"),
+        ]
+    )
+    inner += waffle(
+        [
+            (both, "k-both", "both"),
+            (gained, "k-a", "only selected"),
+            (lost, "k-b", "only baseline"),
+            (neither, "k-none", "both missed"),
+        ],
+        14,
+    )
+    return (
+        "earlier-retrieval-study",
+        "table",
+        figure(
+            f"Held-out questions: {selected}/{total} against {selected - gained + lost}/{total}",
+            "Each square is one held-out question with complete labelled evidence in the top 5.",
+            inner,
+            "The whole held-out gain is a single question, which is why the study supports the choice only modestly.",
+        ),
+        "",
+    )
 
 
 def parity(results):
     total = len(read(results, "relevance-gate")["cases"])
-    inner = legend([("k-a", f"Identical evidence: {total} of {total}")]) + waffle([(total, "k-a", "identical")], 40)
-    return ("retrieval-parity", "para:2", figure(
-        "Rebuilt retrieval against the saved retrieval",
-        "Each square is one fixed query. Evidence IDs, packed texts and top-10 candidates all matched.",
-        inner,
-    ), "")
+    inner = legend([("k-a", f"Identical evidence: {total} of {total}")]) + waffle(
+        [(total, "k-a", "identical")], 40
+    )
+    return (
+        "retrieval-parity",
+        "para:2",
+        figure(
+            "Rebuilt retrieval against the saved retrieval",
+            "Each square is one fixed query. Evidence IDs, packed texts and top-10 candidates all matched.",
+            inner,
+        ),
+        "",
+    )
 
 
 def browser_suites(results):
     data = read(results, "browser-suites")
     journey_ids = list(data["journey_check_ids"])
     question_ids = [q for ids in data["question_categories"].values() for q in ids]
-    runs = [r for r in data["runs"] if r["phase"] in ("final, all fixes applied", "post-cleanup demo flow")]
+    runs = [
+        r
+        for r in data["runs"]
+        if r["phase"] in ("final, all fixes applied", "post-cleanup demo flow")
+    ]
 
     def rows(suite, ids):
         out, counter = [], {}
         for run in runs:
             if run["suite"] != suite:
                 continue
-            outcomes = {c["id"]: c["outcome"] for c in run.get("checks", run.get("cases", []))}
+            outcomes = {
+                c["id"]: c["outcome"] for c in run.get("checks", run.get("cases", []))
+            }
             who = "Qwen" if run["provider"] == "local" else run["model"]
             label = f"{who} {'post-cleanup' if run['phase'].startswith('post') else 'final'}"
             counter[label] = counter.get(label, 0) + 1
@@ -251,19 +360,28 @@ def browser_suites(results):
                 f'<div class="heat-row"><span class="heat-label" title="{label} run {counter[label]}">{label} {counter[label]}</span>'
                 f'<span class="heat-cells" style="grid-template-columns:repeat({len(ids)},1fr)">{cells}</span>'
                 f'<span class="heat-score">{run["passed"]}/{run["total"]}</span></div>'
-                + (f'<div class="heat-row"><span></span><span class="heat-label">failed: {", ".join(failed)}</span><span></span></div>' if failed else "")
+                + (
+                    f'<div class="heat-row"><span></span><span class="heat-label">failed: {", ".join(failed)}</span><span></span></div>'
+                    if failed
+                    else ""
+                )
             )
         return "".join(out)
 
     inner = legend([("k-a", "Pass"), ("k-bad", "Fail")])
     inner += f'<div class="heat"><div class="heat-group">16-check demo journey</div>{rows("journey", journey_ids)}'
     inner += f'<div class="heat-group">20-question suite</div>{rows("questions", question_ids)}</div>'
-    return ("browser-suites", "para:3", figure(
-        "Every check of every final run",
-        "One row per run, one square per check or question. Hover a square to see its ID.",
-        inner,
-        "The only red square is U02 in every question run, the known routing limit.",
-    ), "")
+    return (
+        "browser-suites",
+        "para:3",
+        figure(
+            "Every check of every final run",
+            "One row per run, one square per check or question. Hover a square to see its ID.",
+            inner,
+            "The only red square is U02 in every question run, the known routing limit.",
+        ),
+        "",
+    )
 
 
 def models(results):
@@ -275,18 +393,25 @@ def models(results):
         return f'<span class="bar-track"><span class="bar-fill {cls}" style="display:block;width:{value / top * 100:.1f}%"></span></span><span class="bar-val">{text}</span>'
 
     quality = "".join(
-        f'<div class="bar-row"><span>{m["model"]}</span>{bar(ratio(m["questions_passed"])[0], 60, m["questions_passed"])}</div>' for m in rows
+        f'<div class="bar-row"><span>{m["model"]}</span>{bar(ratio(m["questions_passed"])[0], 60, m["questions_passed"])}</div>'
+        for m in rows
     )
     cost = "".join(
-        f'<div class="bar-row"><span>{m["model"]}</span>{bar(m["usd_per_model_turn_mean"], top_cost, "$" + format(m["usd_per_model_turn_mean"], ".4f"), "alt")}</div>' for m in rows
+        f'<div class="bar-row"><span>{m["model"]}</span>{bar(m["usd_per_model_turn_mean"], top_cost, "$" + format(m["usd_per_model_turn_mean"], ".4f"), "alt")}</div>'
+        for m in rows
     )
     inner = f'<div class="two"><div><p class="sub-title">Questions passed, 3 runs of 20</p><div class="bars">{quality}</div></div><div><p class="sub-title">Cost per model turn</p><div class="bars">{cost}</div></div></div>'
-    return ("model-comparison", "table", figure(
-        "Quality is nearly level, cost is not",
-        "All three passed 48 of 48 journey checks. The question bars start at zero, so small gaps look small.",
-        inner,
-        "gpt-4.1 costs about five times as much as gpt-4.1-mini for one more passed question in 60.",
-    ), "")
+    return (
+        "model-comparison",
+        "table",
+        figure(
+            "Quality is nearly level, cost is not",
+            "All three passed 48 of 48 journey checks. The question bars start at zero, so small gaps look small.",
+            inner,
+            "gpt-4.1 costs about five times as much as gpt-4.1-mini for one more passed question in 60.",
+        ),
+        "",
+    )
 
 
 def judge(results):
@@ -311,25 +436,54 @@ def judge(results):
     only_a = sum(c[a] and not c[b] for c in cells)
     only_b = sum(c[b] and not c[a] for c in cells)
     neither = n - both - only_a - only_b
-    pair = next(p for p in paired["pairwise_fully_accepted"] if {p["a"], p["b"]} == {a, b})
-    grid = legend([
-        ("k-both", f"Both accepted: {both}"), ("k-b", f"Only EmbeddingGemma: {only_b}"),
-        ("k-a", f"Only two-view: {only_a}"), ("k-none", f"Neither: {neither}"),
-    ]) + waffle([(both, "k-both", "both"), (only_b, "k-b", "only EmbeddingGemma"), (only_a, "k-a", "only two-view"), (neither, "k-none", "neither")], 25)
-    grid += equation([
-        ("EmbeddingGemma", both, only_b, "b", accepted[b]),
-        ("Two-view", both, only_a, "a", accepted[a]),
-    ])
+    pair = next(
+        p for p in paired["pairwise_fully_accepted"] if {p["a"], p["b"]} == {a, b}
+    )
+    grid = legend(
+        [
+            ("k-both", f"Both accepted: {both}"),
+            ("k-b", f"Only EmbeddingGemma: {only_b}"),
+            ("k-a", f"Only two-view: {only_a}"),
+            ("k-none", f"Neither: {neither}"),
+        ]
+    ) + waffle(
+        [
+            (both, "k-both", "both"),
+            (only_b, "k-b", "only EmbeddingGemma"),
+            (only_a, "k-a", "only two-view"),
+            (neither, "k-none", "neither"),
+        ],
+        25,
+    )
+    grid += equation(
+        [
+            ("EmbeddingGemma", both, only_b, "b", accepted[b]),
+            ("Two-view", both, only_a, "a", accepted[a]),
+        ]
+    )
     inner = f'<div class="bars">{bars}</div><div style="height:22px"></div><p class="sub-title">The top two, question by question</p>{grid}'
-    return ("llm-as-a-judge", "table", figure(
-        f"Fully accepted answers on {n} questions",
-        "Every arm answered the same questions, so they can be compared question by question.",
-        inner,
-        f"The {both} gray questions add the same to both scores. The {accepted[b] - accepted[a]}-point lead comes from {only_b} against {only_a}, and a fair coin splits {only_a + only_b} flips at least that unevenly about half the time (exact McNemar p = {pair['exact_mcnemar_p']:.2f}). That is why no winner is named.",
-    ), "")
+    return (
+        "llm-as-a-judge",
+        "table",
+        figure(
+            f"Fully accepted answers on {n} questions",
+            "Every arm answered the same questions, so they can be compared question by question.",
+            inner,
+            f"The {both} gray questions add the same to both scores. The {accepted[b] - accepted[a]}-point lead comes from {only_b} against {only_a}, and a fair coin splits {only_a + only_b} flips at least that unevenly about half the time (exact McNemar p = {pair['exact_mcnemar_p']:.2f}). That is why no winner is named.",
+        ),
+        "",
+    )
 
 
 def build(results: Path):
     random.seed(0)
-    return [timeline(results), relevance_gate(results), reranker(results), retrieval_study(results),
-            parity(results), browser_suites(results), models(results), judge(results)]
+    return [
+        timeline(results),
+        relevance_gate(results),
+        reranker(results),
+        retrieval_study(results),
+        parity(results),
+        browser_suites(results),
+        models(results),
+        judge(results),
+    ]

@@ -11,7 +11,9 @@ from pathlib import Path
 from evaluation_figures import STYLE as BASE_STYLE
 from evaluation_figures import figure, ratio, read
 
-STYLE = BASE_STYLE + """
+STYLE = (
+    BASE_STYLE
+    + """
   .steps-nav { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
   .steps-nav button { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--rule); background: var(--bg); color: var(--muted); cursor: pointer; }
   .steps-nav button[aria-selected=true] { background: var(--a); border-color: var(--a); color: #fff; }
@@ -57,27 +59,59 @@ STYLE = BASE_STYLE + """
     .pivot-head-row { display: none; }
   }
 """
+)
 
 STEPS = [
-    ("Ask", "What is a mortgage?",
-     '<div class="msg bot">A cited answer built from the reviewed record, with an English PDF source.</div>',
-     ["The local PII check passes the message.", "Retrieval finds candidate records and the reranker scores them.",
-      "The best score clears the 0.23 gate, so the model is called.", "The LLM picks evidence IDs; the server renders the reviewed extract and its citation."]),
-    ("Calculate", "What is my LTV? My mortgage is 2,000,000 and my home is worth 2,500,000.",
-     '<div class="msg bot card">Loan-to-value<span class="big">80.00%</span>Calculation only, not a lending decision.</div>',
-     ["The PII check masks the amounts before any model sees them.", "The LLM answers with a schema-validated tool call.",
-      "Python calculates the LTV with Decimal on the amounts the customer typed.", "The facts are stored in session memory on the server."]),
-    ("Refinance", "I want to refinance my existing mortgage without borrowing more for my house.",
-     '<div class="msg bot">I have recorded the supported details.</div>',
-     ["The LLM interprets the turn as refinance intent with no increase.", "The server validates the proposal against the customer's words.",
-      "Facts are recorded. No card is shown and no draft is started."]),
-    ("Draft", "Draft an application for me",
-     '<div class="msg bot card">Application draft<br>Purpose: Refinance<br>Existing mortgage, property value and property type, with Start application and Discard.</div>',
-     ["Only an explicit request starts a draft.", "The draft is a separate snapshot of the current facts, with its own revision."]),
-    ("Start application", "Clicks Start application",
-     '<div class="msg bot">The mortgage form opens with the supported fields filled in. Every field stays editable.</div>',
-     ["The server checks the draft against the current form snapshot, so an old card cannot overwrite newer edits.",
-      "Submission, BankID, credit checks and analytics are blocked. The customer stays in control."]),
+    (
+        "Ask",
+        "What is a mortgage?",
+        '<div class="msg bot">A cited answer built from the reviewed record, with an English PDF source.</div>',
+        [
+            "The local PII check passes the message.",
+            "Retrieval finds candidate records and the reranker scores them.",
+            "The best score clears the 0.23 gate, so the model is called.",
+            "The LLM picks evidence IDs; the server renders the reviewed extract and its citation.",
+        ],
+    ),
+    (
+        "Calculate",
+        "What is my LTV? My mortgage is 2,000,000 and my home is worth 2,500,000.",
+        '<div class="msg bot card">Loan-to-value<span class="big">80.00%</span>Calculation only, not a lending decision.</div>',
+        [
+            "The PII check masks the amounts before any model sees them.",
+            "The LLM answers with a schema-validated tool call.",
+            "Python calculates the LTV with Decimal on the amounts the customer typed.",
+            "The facts are stored in session memory on the server.",
+        ],
+    ),
+    (
+        "Refinance",
+        "I want to refinance my existing mortgage without borrowing more for my house.",
+        '<div class="msg bot">I have recorded the supported details.</div>',
+        [
+            "The LLM interprets the turn as refinance intent with no increase.",
+            "The server validates the proposal against the customer's words.",
+            "Facts are recorded. No card is shown and no draft is started.",
+        ],
+    ),
+    (
+        "Draft",
+        "Draft an application for me",
+        '<div class="msg bot card">Application draft<br>Purpose: Refinance<br>Existing mortgage, property value and property type, with Start application and Discard.</div>',
+        [
+            "Only an explicit request starts a draft.",
+            "The draft is a separate snapshot of the current facts, with its own revision.",
+        ],
+    ),
+    (
+        "Start application",
+        "Clicks Start application",
+        '<div class="msg bot">The mortgage form opens with the supported fields filled in. Every field stays editable.</div>',
+        [
+            "The server checks the draft against the current form snapshot, so an old card cannot overwrite newer edits.",
+            "Submission, BankID, credit checks and analytics are blocked. The customer stays in control.",
+        ],
+    ),
 ]
 
 
@@ -92,8 +126,10 @@ def journey(results: Path):
         f'<div class="hood"><p class="hood-title">Behind the scenes</p><ol>{"".join(f"<li>{h}</li>" for h in hood)}</ol></div></div>'
         for i, (_name, said, shown, hood) in enumerate(STEPS)
     )
-    inner = (f'<div class="steps-nav" role="tablist" id="steps-nav">{nav}</div><div id="steps">{panels}</div>'
-             '<div class="step-foot"><button type="button" id="step-prev">Previous</button><button type="button" id="step-next">Next</button></div>')
+    inner = (
+        f'<div class="steps-nav" role="tablist" id="steps-nav">{nav}</div><div id="steps">{panels}</div>'
+        '<div class="step-foot"><button type="button" id="step-prev">Previous</button><button type="button" id="step-next">Next</button></div>'
+    )
     script = """(function () {
   const root = document.getElementById('steps');
   root.parentElement.classList.add('js');
@@ -112,11 +148,16 @@ def journey(results: Path):
   next.addEventListener('click', () => show(Math.min(panels.length - 1, current + 1)));
   show(0);
 })();"""
-    return ("1-problem-scope-and-demonstrated-journey", "para:2", figure(
-        "The demonstrated journey, step by step",
-        "What the customer types, what the assistant shows, and what happens behind it. The demo uses synthetic amounts.",
-        inner,
-    ), script)
+    return (
+        "1-problem-scope-and-demonstrated-journey",
+        "para:2",
+        figure(
+            "The demonstrated journey, step by step",
+            "What the customer types, what the assistant shows, and what happens behind it. The demo uses synthetic amounts.",
+            inner,
+        ),
+        script,
+    )
 
 
 def comparisons(results: Path):
@@ -126,7 +167,9 @@ def comparisons(results: Path):
     model = {m["model"]: m for m in read(results, "model-comparison")["models"]}
     suites = read(results, "browser-suites")["runs"]
     final_questions = {
-        r["model"]: (r["passed"], r["total"]) for r in suites if r["phase"] == "final, all fixes applied" and r["suite"] == "questions"
+        r["model"]: (r["passed"], r["total"])
+        for r in suites
+        if r["phase"] == "final, all fixes applied" and r["suite"] == "questions"
     }
     low = 0.75
 
@@ -135,19 +178,51 @@ def comparisons(results: Path):
         return a, b
 
     rows = [
-        ("Retrieval study", "held-out top-5 evidence", [
-            ("Sentence + E5-small", *frac(held["baseline_complete"]), False),
-            ("Whole Q&amp;A + BGE-M3", *frac(held["selected_complete"]), True)]),
-        ("Reranker", "complete supported cases", [
-            ("Local BGE", *frac(rerank["local_bge"]["complete_supported_cases"]), True),
-            ("Cohere", *frac(rerank["cohere"]["complete_supported_cases"]), False)]),
-        ("Model provider", "20-question suite, final build", [
-            ("Local Qwen", *final_questions["Qwen3.5-9B"], True),
-            ("gpt-4.1", *final_questions["gpt-4.1"], True)]),
-        ("OpenAI model", "questions passed over 3 runs", [
-            ("gpt-4.1-mini", *frac(model["gpt-4.1-mini"]["questions_passed"]), False),
-            ("gpt-4.1", *frac(model["gpt-4.1"]["questions_passed"]), True),
-            ("gpt-5.4-mini", *frac(model["gpt-5.4-mini"]["questions_passed"]), False)]),
+        (
+            "Retrieval study",
+            "held-out top-5 evidence",
+            [
+                ("Sentence + E5-small", *frac(held["baseline_complete"]), False),
+                ("Whole Q&amp;A + BGE-M3", *frac(held["selected_complete"]), True),
+            ],
+        ),
+        (
+            "Reranker",
+            "complete supported cases",
+            [
+                (
+                    "Local BGE",
+                    *frac(rerank["local_bge"]["complete_supported_cases"]),
+                    True,
+                ),
+                ("Cohere", *frac(rerank["cohere"]["complete_supported_cases"]), False),
+            ],
+        ),
+        (
+            "Model provider",
+            "20-question suite, final build",
+            [
+                ("Local Qwen", *final_questions["Qwen3.5-9B"], True),
+                ("gpt-4.1", *final_questions["gpt-4.1"], True),
+            ],
+        ),
+        (
+            "OpenAI model",
+            "questions passed over 3 runs",
+            [
+                (
+                    "gpt-4.1-mini",
+                    *frac(model["gpt-4.1-mini"]["questions_passed"]),
+                    False,
+                ),
+                ("gpt-4.1", *frac(model["gpt-4.1"]["questions_passed"]), True),
+                (
+                    "gpt-5.4-mini",
+                    *frac(model["gpt-5.4-mini"]["questions_passed"]),
+                    False,
+                ),
+            ],
+        ),
     ]
 
     def width(a, b):
@@ -161,39 +236,76 @@ def comparisons(results: Path):
             f'<span class="bar-val">{a}/{b}</span></div>'
             for label, a, b, used in options
         )
-        groups.append(f'<div class="cmp-group"><p class="sub-title">{name} <span class="cmp-metric">{metric}</span></p><div class="bars">{bars}</div></div>')
-    ticks = "".join(f'<span style="left:{(t - low) / (1 - low) * 100:.0f}%">{round(t * 100)}%</span>' for t in (0.75, 0.8, 0.85, 0.9, 0.95, 1.0))
+        groups.append(
+            f'<div class="cmp-group"><p class="sub-title">{name} <span class="cmp-metric">{metric}</span></p><div class="bars">{bars}</div></div>'
+        )
+    ticks = "".join(
+        f'<span style="left:{(t - low) / (1 - low) * 100:.0f}%">{round(t * 100)}%</span>'
+        for t in (0.75, 0.8, 0.85, 0.9, 0.95, 1.0)
+    )
     inner = f'<div class="cmp">{"".join(groups)}</div><div class="cmp-axis"><span></span><span class="axis-ticks">{ticks}</span><span></span></div>'
-    return ("4-comparisons-and-evaluation-evidence", "table", figure(
-        "How close each comparison was",
-        "Share of cases each option passed. The bars start at 75%, otherwise the gaps would be too small to see.",
-        inner,
-        "Every gap is between zero and three cases. Where quality was this close, the choice was made on other grounds, as the table explains.",
-    ), "")
+    return (
+        "4-comparisons-and-evaluation-evidence",
+        "table",
+        figure(
+            "How close each comparison was",
+            "Share of cases each option passed. The bars start at 75%, otherwise the gaps would be too small to see.",
+            inner,
+            "Every gap is between zero and three cases. Where quality was this close, the choice was made on other grounds, as the table explains.",
+        ),
+        "",
+    )
 
 
 PIVOTS = [
-    ("Retrieval", "Qwen chose its own tools and could skip retrieval.", "The service always runs the retrieval step."),
-    ("Answers", "Freeform synthesis failed the source-support requirement.", "The LLM picks evidence IDs and the server renders reviewed extracts."),
-    ("State", "Facts and drafts were mixed, so an amount correction could start a draft.", "Current facts and draft snapshots have separate lifecycles, and drafting needs an explicit request."),
-    ("Validation", "A frozen build failed the negated-amount control in 3 of 3 sessions.", "Narrower proposal validation, with the gate kept as regression evidence."),
-    ("Form handoff", "A direct draft handoff overwrote a newer form edit.", "Snapshot validation checks the form before filling it."),
+    (
+        "Retrieval",
+        "Qwen chose its own tools and could skip retrieval.",
+        "The service always runs the retrieval step.",
+    ),
+    (
+        "Answers",
+        "Freeform synthesis failed the source-support requirement.",
+        "The LLM picks evidence IDs and the server renders reviewed extracts.",
+    ),
+    (
+        "State",
+        "Facts and drafts were mixed, so an amount correction could start a draft.",
+        "Current facts and draft snapshots have separate lifecycles, and drafting needs an explicit request.",
+    ),
+    (
+        "Validation",
+        "A frozen build failed the negated-amount control in 3 of 3 sessions.",
+        "Narrower proposal validation, with the gate kept as regression evidence.",
+    ),
+    (
+        "Form handoff",
+        "A direct draft handoff overwrote a newer form edit.",
+        "Snapshot validation checks the form before filling it.",
+    ),
 ]
 
 
 def pivots(results: Path):
-    head = ('<div class="pivot pivot-head-row"><span></span><span class="pivot-head">Before</span><span></span>'
-            '<span class="pivot-head">After</span></div>')
+    head = (
+        '<div class="pivot pivot-head-row"><span></span><span class="pivot-head">Before</span><span></span>'
+        '<span class="pivot-head">After</span></div>'
+    )
     rows = "".join(
         f'<div class="pivot"><span class="pivot-area">{area}</span><span class="pivot-before">{before}</span>'
         f'<span class="pivot-arrow" aria-hidden="true">&rarr;</span><span class="pivot-after">{after}</span></div>'
         for area, before, after in PIVOTS
     )
-    return ("5-failure-analysis-and-limits", "para:4", figure(
-        "What each failure changed",
-        "Design changes forced by failures, before the final round of browser fixes listed below.",
-        f'<div class="pivots">{head}{rows}</div>',
-    ), "")
+    return (
+        "5-failure-analysis-and-limits",
+        "para:4",
+        figure(
+            "What each failure changed",
+            "Design changes forced by failures, before the final round of browser fixes listed below.",
+            f'<div class="pivots">{head}{rows}</div>',
+        ),
+        "",
+    )
 
 
 def build(results: Path):
