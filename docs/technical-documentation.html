@@ -163,6 +163,104 @@
   }
   footer a { color: var(--muted); }
 
+  .fig { font-family: var(--sans); margin: 8px 0 44px; padding: 22px 22px 18px; background: var(--panel); border: 1px solid var(--rule); border-radius: 12px; }
+  @media (min-width: 900px) { .fig { margin-left: -48px; margin-right: -48px; padding: 26px 30px 22px; } }
+  .fig-title { font-size: 16px; font-weight: 600; margin: 0 0 4px; line-height: 1.4; }
+  .fig-sub { font-size: 14px; color: var(--muted); margin: 0 0 18px; line-height: 1.5; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); margin: 0 0 12px; }
+  .sw { width: 12px; height: 12px; border-radius: 2px; display: inline-block; margin-right: 6px; vertical-align: -1px; }
+  .waffle { display: grid; gap: 3px; max-width: 620px; }
+  .waffle i { aspect-ratio: 1; border-radius: 2px; display: block; }
+  .k-both { background: var(--both); } .k-a { background: var(--a); } .k-b { background: var(--b); }
+  .k-bad { background: var(--bad); } .k-none { border: 1px solid var(--none); }
+  .eq { display: grid; grid-template-columns: auto auto auto auto auto auto auto; gap: 2px 8px; width: max-content; max-width: 100%; font-size: 14px; margin-top: 16px; align-items: baseline; }
+  .eq span, .eq strong { white-space: nowrap; }
+  .eq .muted { color: var(--muted); } .eq .a { color: var(--a-ink); } .eq .b { color: var(--b-ink); } .eq strong { font-weight: 600; }
+  .cap { font-size: 13.5px; color: var(--muted); margin: 14px 0 0; line-height: 1.55; }
+  .stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .stage { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 14px 12px; }
+  .stage-n { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .stage h4 { font-size: 15px; margin: 4px 0 10px; font-weight: 600; }
+  .chip { display: block; font-size: 13px; line-height: 1.45; padding: 6px 0; border-top: 1px solid var(--rule); }
+  .chip b { font-weight: 600; color: var(--a-ink); }
+  .gate svg { width: 100%; height: auto; display: block; }
+  .gate-controls { display: flex; align-items: center; gap: 12px; font-size: 14px; margin-top: 8px; flex-wrap: wrap; }
+  .gate-controls input[type=range] { flex: 1; min-width: 160px; accent-color: var(--a); }
+  .gate-controls button { font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--rule); background: var(--bg); color: var(--text); cursor: pointer; }
+  .gate-readout { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .stat { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; }
+  .stat-label { font-size: 12.5px; color: var(--muted); }
+  .stat-value { font-size: 22px; font-weight: 600; letter-spacing: -.01em; }
+  .heat { display: grid; gap: 6px; font-size: 13px; }
+  .heat-row { display: grid; grid-template-columns: 150px 1fr 54px; gap: 10px; align-items: center; }
+  .heat-cells { display: grid; gap: 2px; }
+  .heat-cells i { height: 16px; border-radius: 2px; display: block; }
+  .heat-label { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .heat-group { font-weight: 600; margin: 10px 0 2px; }
+  .heat-score { text-align: right; font-variant-numeric: tabular-nums; }
+  .bars { display: grid; gap: 10px; font-size: 13.5px; }
+  .bar-row { display: grid; grid-template-columns: 190px 1fr 64px; gap: 10px; align-items: center; }
+  .bar-track { height: 14px; background: var(--bg); border: 1px solid var(--rule); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; background: var(--a); }
+  .bar-fill.alt { background: var(--b); }
+  .bar-fill.dim { background: var(--both); }
+  .bar-val { text-align: right; font-variant-numeric: tabular-nums; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .two .bar-row { grid-template-columns: 100px 1fr 62px; }
+  .sub-title { font-size: 13px; font-weight: 600; margin: 0 0 10px; }
+  @media (max-width: 600px) {
+    .fig { padding: 18px 16px 14px; margin-left: -8px; margin-right: -8px; }
+    .stages, .two, .gate-readout { grid-template-columns: 1fr; }
+    .heat-row { grid-template-columns: 96px 1fr 44px; }
+    .bar-row, .two .bar-row { grid-template-columns: 1fr 64px; gap: 2px 10px; }
+    .bar-row > span:first-child { grid-column: 1 / -1; }
+  }
+
+  .steps-nav { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
+  .steps-nav button { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--rule); background: var(--bg); color: var(--muted); cursor: pointer; }
+  .steps-nav button[aria-selected=true] { background: var(--a); border-color: var(--a); color: #fff; }
+  .step { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; min-height: 236px; }
+  .js .step:not(.active) { display: none; }
+  .step + .step { margin-top: 18px; }
+  .js .step + .step { margin-top: 0; }
+  .chat { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; display: grid; gap: 10px; align-content: start; }
+  .msg { font-size: 14px; line-height: 1.5; padding: 9px 12px; border-radius: 12px; max-width: 92%; }
+  .msg.user { justify-self: end; background: color-mix(in srgb, var(--a) 16%, var(--bg)); border-bottom-right-radius: 4px; }
+  .msg.bot { justify-self: start; border: 1px solid var(--rule); border-bottom-left-radius: 4px; }
+  .msg.card { border: 1px solid var(--a); }
+  .msg .big { display: block; font-size: 24px; font-weight: 600; color: var(--a-ink); letter-spacing: -.01em; }
+  .hood { font-size: 13.5px; line-height: 1.55; }
+  .hood-title { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 0 0 8px; }
+  .hood ol { margin: 0; padding-left: 20px; }
+  .hood li { margin-bottom: 6px; padding-left: 2px; }
+  .step-foot { display: flex; justify-content: space-between; margin-top: 14px; }
+  .step-foot button { font: inherit; font-size: 13px; padding: 5px 12px; border-radius: 6px; border: 1px solid var(--rule); background: var(--bg); color: var(--text); cursor: pointer; }
+  .step-foot button:disabled { opacity: .4; cursor: default; }
+  .cmp { display: grid; gap: 18px; }
+  .cmp .bar-row { grid-template-columns: 230px 1fr 64px; }
+  .cmp-metric { font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .chosen { font-style: normal; font-size: 11px; color: var(--a-ink); border: 1px solid var(--a); border-radius: 999px; padding: 0 6px; margin-left: 6px; }
+  .cmp-axis { display: grid; grid-template-columns: 230px 1fr 64px; gap: 10px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .axis-ticks { position: relative; height: 16px; border-top: 1px solid var(--rule); }
+  .axis-ticks span { position: absolute; top: 2px; transform: translateX(-50%); }
+  .pivots { display: grid; gap: 10px; }
+  .pivot { display: grid; grid-template-columns: 110px 1fr 22px 1fr; gap: 10px; align-items: stretch; font-size: 13.5px; line-height: 1.45; }
+  .pivot-area { font-weight: 600; padding-top: 10px; }
+  .pivot-before, .pivot-after { padding: 9px 12px; border-radius: 8px; background: var(--bg); border: 1px solid var(--rule); }
+  .pivot-before { border-left: 3px solid var(--bad); border-radius: 0 8px 8px 0; }
+  .pivot-after { border-left: 3px solid var(--a); border-radius: 0 8px 8px 0; }
+  .pivot-arrow { align-self: center; text-align: center; color: var(--muted); }
+  .pivot-head { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  @media (max-width: 600px) {
+    .step { grid-template-columns: 1fr; min-height: 0; }
+    .cmp .bar-row { grid-template-columns: 1fr 64px; }
+    .cmp-axis { grid-template-columns: 1fr 64px; gap: 2px 10px; }
+    .cmp-axis > span:first-child { display: none; }
+    .pivot { grid-template-columns: 1fr; gap: 6px; }
+    .pivot-arrow { display: none; }
+    .pivot-head-row { display: none; }
+  }
+
   @media (max-width: 600px) {
     body { font-size: 18px; line-height: 1.58; }
     main { padding-top: 36px; }
@@ -189,6 +287,8 @@
 <h2 id="1-problem-scope-and-demonstrated-journey">1. Problem, scope and demonstrated journey</h2>
 <p>This project was built for a Swedish loan comparison company. Mortgages, consumer loans, business loans and insurance come with complex rules and conditions, and a customer reading about a loan often needs an explanation, a calculation and help moving the same details into an application form. An AI assistant that can answer basic to complex questions can take this work off customer agents, so they can focus on handling applications and converting them. The assistant described here is meant to help customers through those rules. It has to keep source conditions attached to its answers, calculate from the customer's own inputs and leave the customer in control of the form.</p>
 <p>The prototype answers product questions from reviewed English evidence and demonstrates an existing-mortgage refinance journey. It runs on local Qwen by default, and the recorded demo uses OpenAI <code>gpt-4.1</code> through the same validated interface. The customer asks what a mortgage is, checks an illustrative loan-to-value (LTV) calculation, gives refinance details and explicitly asks for an application draft. One Start application action opens the editable mortgage form with the supported fields filled in. With a SEK 2,000,000 mortgage and a SEK 2,500,000 property value, the observed LTV is 80.00%. The assistant does not submit an application or decide lending eligibility.</p>
+<figure class="fig "><div class="fig-title">The demonstrated journey, step by step</div><p class="fig-sub">What the customer types, what the assistant shows, and what happens behind it. The demo uses synthetic amounts.</p><div class="steps-nav" role="tablist" id="steps-nav"><button type="button" role="tab" aria-selected="true" data-step="0">1. Ask</button><button type="button" role="tab" aria-selected="false" data-step="1">2. Calculate</button><button type="button" role="tab" aria-selected="false" data-step="2">3. Refinance</button><button type="button" role="tab" aria-selected="false" data-step="3">4. Draft</button><button type="button" role="tab" aria-selected="false" data-step="4">5. Start application</button></div><div id="steps"><div class="step active" role="tabpanel" data-panel="0"><div class="chat"><div class="msg user">What is a mortgage?</div><div class="msg bot">A cited answer built from the reviewed record, with an English PDF source.</div></div><div class="hood"><p class="hood-title">Behind the scenes</p><ol><li>The local PII check passes the message.</li><li>Retrieval finds candidate records and the reranker scores them.</li><li>The best score clears the 0.23 gate, so the model is called.</li><li>The LLM picks evidence IDs; the server renders the reviewed extract and its citation.</li></ol></div></div><div class="step" role="tabpanel" data-panel="1"><div class="chat"><div class="msg user">What is my LTV? My mortgage is 2,000,000 and my home is worth 2,500,000.</div><div class="msg bot card">Loan-to-value<span class="big">80.00%</span>Calculation only, not a lending decision.</div></div><div class="hood"><p class="hood-title">Behind the scenes</p><ol><li>The PII check masks the amounts before any model sees them.</li><li>The LLM answers with a schema-validated tool call.</li><li>Python calculates the LTV with Decimal on the amounts the customer typed.</li><li>The facts are stored in session memory on the server.</li></ol></div></div><div class="step" role="tabpanel" data-panel="2"><div class="chat"><div class="msg user">I want to refinance my existing mortgage without borrowing more for my house.</div><div class="msg bot">I have recorded the supported details.</div></div><div class="hood"><p class="hood-title">Behind the scenes</p><ol><li>The LLM interprets the turn as refinance intent with no increase.</li><li>The server validates the proposal against the customer's words.</li><li>Facts are recorded. No card is shown and no draft is started.</li></ol></div></div><div class="step" role="tabpanel" data-panel="3"><div class="chat"><div class="msg user">Draft an application for me</div><div class="msg bot card">Application draft<br>Purpose: Refinance<br>Existing mortgage, property value and property type, with Start application and Discard.</div></div><div class="hood"><p class="hood-title">Behind the scenes</p><ol><li>Only an explicit request starts a draft.</li><li>The draft is a separate snapshot of the current facts, with its own revision.</li></ol></div></div><div class="step" role="tabpanel" data-panel="4"><div class="chat"><div class="msg user">Clicks Start application</div><div class="msg bot">The mortgage form opens with the supported fields filled in. Every field stays editable.</div></div><div class="hood"><p class="hood-title">Behind the scenes</p><ol><li>The server checks the draft against the current form snapshot, so an old card cannot overwrite newer edits.</li><li>Submission, BankID, credit checks and analytics are blocked. The customer stays in control.</li></ol></div></div></div><div class="step-foot"><button type="button" id="step-prev">Previous</button><button type="button" id="step-next">Next</button></div></figure>
+
 <p>The knowledge corpus covers consumer loans, business loans, mortgages, insurance and Kreddy, the company's personal finance management (PFM) app. The only demonstrated handoff is Refinance without additional borrowing. One successful example does not show that conversations are reliable in general, and business impact is still an unmeasured hypothesis.</p>
 <p>The project adds an independent FastAPI/LangGraph backend and a local integration. It reuses the company's Gatsby interface and capstone source material that had already been reviewed. The proprietary frontend stays outside this repository, with 15 saved page contexts for offline browsing, so routes without saved content may be unavailable. Everything runs locally on synthetic financial values, and submission, BankID, credit checks and analytics are blocked.</p>
 <p>The <a href="capstone-one-ish-pager.pdf">design one-pager</a> planned a hosted, bilingual assistant. The sections below describe what was implemented and keep historical measurements apart from current browser observations.</p>
@@ -262,6 +362,8 @@
 </tr>
 </tbody>
 </table></div>
+<figure class="fig "><div class="fig-title">How close each comparison was</div><p class="fig-sub">Share of cases each option passed. The bars start at 75%, otherwise the gaps would be too small to see.</p><div class="cmp"><div class="cmp-group"><p class="sub-title">Retrieval study <span class="cmp-metric">held-out top-5 evidence</span></p><div class="bars"><div class="bar-row"><span>Sentence + E5-small</span><span class="bar-track"><span class="bar-fill dim" style="display:block;width:57.1%"></span></span><span class="bar-val">25/28</span></div><div class="bar-row"><span>Whole Q&amp;A + BGE-M3 <em class=chosen>chosen</em></span><span class="bar-track"><span class="bar-fill" style="display:block;width:71.4%"></span></span><span class="bar-val">26/28</span></div></div></div><div class="cmp-group"><p class="sub-title">Reranker <span class="cmp-metric">complete supported cases</span></p><div class="bars"><div class="bar-row"><span>Local BGE <em class=chosen>chosen</em></span><span class="bar-track"><span class="bar-fill" style="display:block;width:46.3%"></span></span><span class="bar-val">129/149</span></div><div class="bar-row"><span>Cohere</span><span class="bar-track"><span class="bar-fill dim" style="display:block;width:51.7%"></span></span><span class="bar-val">131/149</span></div></div></div><div class="cmp-group"><p class="sub-title">Model provider <span class="cmp-metric">20-question suite, final build</span></p><div class="bars"><div class="bar-row"><span>Local Qwen <em class=chosen>chosen</em></span><span class="bar-track"><span class="bar-fill" style="display:block;width:80.0%"></span></span><span class="bar-val">19/20</span></div><div class="bar-row"><span>gpt-4.1 <em class=chosen>chosen</em></span><span class="bar-track"><span class="bar-fill" style="display:block;width:80.0%"></span></span><span class="bar-val">19/20</span></div></div></div><div class="cmp-group"><p class="sub-title">OpenAI model <span class="cmp-metric">questions passed over 3 runs</span></p><div class="bars"><div class="bar-row"><span>gpt-4.1-mini</span><span class="bar-track"><span class="bar-fill dim" style="display:block;width:60.0%"></span></span><span class="bar-val">54/60</span></div><div class="bar-row"><span>gpt-4.1 <em class=chosen>chosen</em></span><span class="bar-track"><span class="bar-fill" style="display:block;width:66.7%"></span></span><span class="bar-val">55/60</span></div><div class="bar-row"><span>gpt-5.4-mini</span><span class="bar-track"><span class="bar-fill dim" style="display:block;width:80.0%"></span></span><span class="bar-val">57/60</span></div></div></div></div><div class="cmp-axis"><span></span><span class="axis-ticks"><span style="left:0%">75%</span><span style="left:20%">80%</span><span style="left:40%">85%</span><span style="left:60%">90%</span><span style="left:80%">95%</span><span style="left:100%">100%</span></span><span></span></div><p class="cap">Every gap is between zero and three cases. Where quality was this close, the choice was made on other grounds, as the table explains.</p></figure>
+
 <p>The earlier chunking and embedding study used an earlier corpus and non-exhaustive labels written by an agent. It supports the move to dense BGE retrieval and gives no answer-quality score. The <a href="evaluation.html#reranker-comparison">reranker comparison</a> kept 159 candidate sets, packing and equivalence rules fixed, and 149 of those sets had supported-case labels. Local BGE remains the runtime choice because Cohere's net gain was small and came with regressions.</p>
 <p>The <a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/results/retrieval-parity.json">159-query parity receipt</a> separates implementation changes from retrieval changes. The browser suites are functional examples the system was developed against, so they are not unseen acceptance results.</p>
 <p>Final quality should be measured over complete journeys, counting every required answer, clarification, calculation and browser action, with errors and timeouts counted as failures. Source support, applicable citations, numeric correctness and forbidden actions should be reported separately. The original design targets were 80% journey success and supported-answer coverage, 85% evidence recall@5, and all critical cases passing. These remain targets, and this document does not claim the current local runtime meets them.</p>
@@ -273,6 +375,8 @@
 <p>The earlier state design mixed conversation facts with application drafts. An amount correction could start draft preparation, and a following LTV question could miss the calculation. A stopped hosted diagnostic using the returned <code>gpt-5.4-mini-2026-03-17</code> identity reproduced the correction and intent failures, which showed that changing the provider did not repair the state contract. The redesign separated current facts from draft snapshots and made draft preparation explicit (<a href="evaluation.html#reranker-comparison">saved diagnostic evidence</a>).</p>
 <p>A frozen <code>c9ca601</code> development build completed the positive memory steps in three sessions but failed the negated-amount control in each one, and strict validation rejected its proposals. That historical gate scored 0/3, and the later controls were never reached. It led to narrower proposal validation and is kept as regression evidence. It has not been rerun on the current build, so this document claims neither failure nor success on the full gate for today's runtime (<a href="https://github.com/kapilashrami/grounded-mortgage-assistant/blob/main/docs/results/qwen-gate.json">historical gate</a>).</p>
 <p>Browser work exposed failures outside inference. Start over first failed because the running frontend proxy was stale, and reloading the task-owned server restored the existing allowed reset route. Direct draft handoff first overwrote a newer form edit, and snapshot validation was repaired and checked in the browser. These failures are why the project tests the visible customer path as well as module correctness (<a href="evaluation.html#failures-and-pivots">reset, handoff and stale-edit evidence</a>).</p>
+<figure class="fig "><div class="fig-title">What each failure changed</div><p class="fig-sub">Design changes forced by failures, before the final round of browser fixes listed below.</p><div class="pivots"><div class="pivot pivot-head-row"><span></span><span class="pivot-head">Before</span><span></span><span class="pivot-head">After</span></div><div class="pivot"><span class="pivot-area">Retrieval</span><span class="pivot-before">Qwen chose its own tools and could skip retrieval.</span><span class="pivot-arrow" aria-hidden="true">&rarr;</span><span class="pivot-after">The service always runs the retrieval step.</span></div><div class="pivot"><span class="pivot-area">Answers</span><span class="pivot-before">Freeform synthesis failed the source-support requirement.</span><span class="pivot-arrow" aria-hidden="true">&rarr;</span><span class="pivot-after">The LLM picks evidence IDs and the server renders reviewed extracts.</span></div><div class="pivot"><span class="pivot-area">State</span><span class="pivot-before">Facts and drafts were mixed, so an amount correction could start a draft.</span><span class="pivot-arrow" aria-hidden="true">&rarr;</span><span class="pivot-after">Current facts and draft snapshots have separate lifecycles, and drafting needs an explicit request.</span></div><div class="pivot"><span class="pivot-area">Validation</span><span class="pivot-before">A frozen build failed the negated-amount control in 3 of 3 sessions.</span><span class="pivot-arrow" aria-hidden="true">&rarr;</span><span class="pivot-after">Narrower proposal validation, with the gate kept as regression evidence.</span></div><div class="pivot"><span class="pivot-area">Form handoff</span><span class="pivot-before">A direct draft handoff overwrote a newer form edit.</span><span class="pivot-arrow" aria-hidden="true">&rarr;</span><span class="pivot-after">Snapshot validation checks the form before filling it.</span></div></div></figure>
+
 <p>Final testing and a recording rehearsal found eight more defects. Each was reproduced in the browser and fixed with a test:</p>
 <ul>
 <li><code>without extra borrowing</code> lost its no-increase proof.</li>
@@ -290,6 +394,25 @@
   </article>
   <footer>Source: <a href="https://github.com/kapilashrami/grounded-mortgage-assistant">github.com/kapilashrami/grounded-mortgage-assistant</a></footer>
 </main>
-
+<script>
+(function () {
+  const root = document.getElementById('steps');
+  root.parentElement.classList.add('js');
+  const tabs = [...document.querySelectorAll('#steps-nav button')];
+  const panels = [...root.querySelectorAll('.step')];
+  const prev = document.getElementById('step-prev'), next = document.getElementById('step-next');
+  let current = 0;
+  function show(i) {
+    current = i;
+    tabs.forEach((t, k) => t.setAttribute('aria-selected', k === i));
+    panels.forEach((p, k) => p.classList.toggle('active', k === i));
+    prev.disabled = i === 0; next.disabled = i === panels.length - 1;
+  }
+  tabs.forEach((t, k) => t.addEventListener('click', () => show(k)));
+  prev.addEventListener('click', () => show(Math.max(0, current - 1)));
+  next.addEventListener('click', () => show(Math.min(panels.length - 1, current + 1)));
+  show(0);
+})();
+</script>
 </body>
 </html>

@@ -18,6 +18,7 @@ import subprocess
 from pathlib import Path
 
 import evaluation_figures
+import technical_figures
 
 ROOT = Path(__file__).resolve().parents[2]
 DOCS = ROOT / "docs"
@@ -31,7 +32,7 @@ PAGES = {
         "description": "Technical documentation for a grounded mortgage chat assistant: retrieval, workflow, evaluation and limits.",
         "subtitle_from_source": True,
         "nav": [("Evaluation", "evaluation.html"), ("Architecture", "architecture/overview.html")],
-        "figures": None,
+        "figures": technical_figures,
     },
     "evaluation": {
         "description": "Evaluation of a grounded mortgage chat assistant: relevance gate, rerankers, retrieval, browser suites, models and LLM-as-a-judge.",
